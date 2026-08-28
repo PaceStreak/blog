@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+
+// Drafts are excluded from the index, the feed and the sitemap — set
+// `draft: true` in a post's frontmatter to keep working on it in the open.
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<Base
+  title="PaceStreak — build log"
+  description="Building a workout streak tracker in the open. Notes on what broke, what it cost, and what I would do differently."
+  path="/"
+>
+  <section class="wrap intro">
+    <h1>Build log</h1>
+    <p>
+      Notes from building <a href="https://www.pacestreak.com" style="color:var(--accent)">PaceStreak</a>,
+      a workout streak tracker. What broke, what it cost, and what I would do
+      differently — written as it happens rather than tidied up afterwards.
+    </p>
+  </section>
+
+  <div class="wrap">
+    {posts.length === 0 ? (
+      <p class="empty">No posts yet. The first one is being written.</p>
+    ) : (
+      <ul class="posts">
+        {posts.map((post) => (
+          <li>
+            <a class="post-link" href={`/posts/${post.id}`}>
+              <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+              <h2>{post.data.title}</h2>
+              <p>{post.data.description}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Base>

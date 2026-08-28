@@ -1,0 +1,74 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Canonical path, e.g. "/posts/foo". Defaults to the current URL. */
+  path?: string;
+}
+
+const { title, description, path } = Astro.props;
+const canonical = new URL(path ?? Astro.url.pathname, Astro.site);
+const ogImage = "https://www.pacestreak.com/brand/social/og.png";
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0a0a0b" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PaceStreak" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@PaceStreak" />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="PaceStreak build log" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="nav">
+      <div class="wrap nav__inner">
+        <a class="brand" href="/">
+          <img src="/favicon.svg" alt="" width="24" height="24" />
+          <b class="brand__word">Pace<span>Streak</span></b>
+          <small>build log</small>
+        </a>
+        <nav class="nav__links">
+          <a href="https://www.pacestreak.com">Product</a>
+          <a href="/rss.xml">RSS</a>
+          <a href="https://github.com/PaceStreak">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer__inner">
+        <span>&copy; {year} PaceStreak</span>
+        <span class="footer__links">
+          <a href="https://www.pacestreak.com">pacestreak.com</a>
+          <a href="https://status.pacestreak.com">Status</a>
+          <a href="/rss.xml">RSS</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
