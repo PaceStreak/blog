@@ -1,1 +1,10 @@
-{ "MD013": false, "MD033": false, "MD041": false, "MD024": { "siblings_only": true } }
+{
+  "MD013": false,
+  "MD033": false,
+  "MD041": false,
+  "MD024": { "siblings_only": true },
+
+  "//": "Prettier formats markdown here and normalises emphasis to underscore and strong to asterisk. markdownlint defers to it rather than the two tools fighting over every file.",
+  "MD049": { "style": "underscore" },
+  "MD050": { "style": "asterisk" }
+}

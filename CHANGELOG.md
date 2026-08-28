@@ -23,7 +23,7 @@ Notable changes to the blog itself, not to its posts.
   the bug above cannot recur silently.
 - Dependabot for npm and GitHub Actions, grouped.
 - `CONTRIBUTING.md` and `SECURITY.md`. These exist per-repo because community
-  health files in a *public* `.github` repository do not apply to *private*
+  health files in a _public_ `.github` repository do not apply to _private_
   ones, and this repository is private.
 
 ## 2026-08-28
