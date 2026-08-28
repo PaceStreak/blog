@@ -26,7 +26,7 @@ Write here.
 The filename becomes the URL: `my-post.md` → `/posts/my-post`.
 
 **Frontmatter is validated, not suggested.** `src/content.config.ts` defines a
-schema, so a missing `title` or a malformed `date` fails the *build* rather than
+schema, so a missing `title` or a malformed `date` fails the _build_ rather than
 publishing something broken. That is deliberate — a blog that silently renders a
 post with no date is worse than one that refuses to build.
 

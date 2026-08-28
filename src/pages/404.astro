@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+
+// Without this, Cloudflare Pages answers every unknown path with index.html and
+// a 200. That is not just a soft 404 for search engines — before this page
+// existed, /robots.txt returned the site's HTML, and Cloudflare concatenated it
+// onto its own content-signals policy. Crawlers were being handed a robots.txt
+// with a full HTML document inside it.
+---
+
+<Base
+  title="Page not found — PaceStreak build log"
+  description="That page does not exist."
+  path="/404"
+>
+  <section class="wrap intro">
+    <h1>404</h1>
+    <p>
+      That post or page doesn't exist. It may have been renamed, or the link may never
+      have pointed anywhere.
+    </p>
+    <p style="margin-top:24px">
+      <a href="/" style="color:var(--accent)">All posts</a> &middot;
+      <a href="https://www.pacestreak.com" style="color:var(--accent)">PaceStreak</a>
+    </p>
+  </section>
+</Base>

@@ -1,0 +1,81 @@
+# Checks the site still builds and type-checks. Deployment is Cloudflare's job —
+# it builds from this repository directly — so this workflow deliberately does
+# not deploy. Its purpose is to fail a pull request before it reaches main.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Type-check and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Pinned to a commit SHA, not a tag: tags are mutable.
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # `npm ci` installs exactly the lockfile and fails if it has drifted from
+      # package.json, instead of quietly resolving something else.
+      - name: Install
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      # Validates the content collection schema too: a post with a missing
+      # title or a malformed date fails here rather than on the live site.
+      - name: Type-check
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      # The soft-404 this repository shipped with meant /robots.txt returned
+      # HTML. Assert the build produces both files so that cannot recur.
+      - name: Assert 404 and robots.txt were emitted
+        run: |
+          for f in dist/404.html dist/robots.txt dist/sitemap-index.xml dist/rss.xml; do
+            if [ ! -f "$f" ]; then
+              echo "::error::$f missing from build output"
+              exit 1
+            fi
+            echo "ok $f"
+          done
+
+  markdown:
+    name: Lint markdown
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@6bf21b07787794f89a243495939cd651942aeabe # v24.1.0
+        with:
+          globs: |
+            *.md
+            src/content/blog/*.md

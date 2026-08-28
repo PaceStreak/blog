@@ -1,0 +1,20 @@
+# Astro and its toolchain move quickly, and this repository holds no lockfile
+# discipline beyond what Dependabot enforces. Grouped so a week of patch bumps
+# arrives as one pull request rather than nine.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      astro:
+        patterns: ["astro", "@astrojs/*"]
+      dev-tooling:
+        patterns: ["prettier*", "typescript"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly

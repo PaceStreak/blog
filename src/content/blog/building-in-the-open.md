@@ -36,7 +36,7 @@ updated instantly and the CSS did not. The footer icons rendered at about 170px
 instead of 20px, and if I had not looked at the page I would have shipped it.
 
 **A DNS record with nothing behind it.** Adding `www` as a proxied record
-without a matching route produced a `522` — which is *worse* than the
+without a matching route produced a `522` — which is _worse_ than the
 `NXDOMAIN` it replaced. Before, the hostname did not exist. After, it existed
 and returned a Cloudflare error page, which reads to a visitor as "this product
 is broken".
