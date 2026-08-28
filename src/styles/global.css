@@ -59,7 +59,7 @@ video {
 
 .wrap {
   width: 100%;
-  max-width: 720px;
+  max-width: var(--wrap, 720px);
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -390,5 +390,40 @@ video {
   }
   .nav__inner {
     gap: 12px;
+  }
+}
+
+/* ------------------------------------------------------------ Large screens */
+/* A 720px measure is right for reading prose, so the column does not grow much
+   — but the type was pinned at 17px, which reads small on a 1440+ display. */
+@media (min-width: 1440px) {
+  :root {
+    --wrap: 800px;
+  }
+  body {
+    font-size: 18.5px;
+  }
+  .intro h1 {
+    font-size: 3.1rem;
+  }
+  .post__title {
+    font-size: 2.9rem;
+  }
+}
+
+/* ------------------------------------------------------------ Small screens */
+@media (max-width: 380px) {
+  .wrap {
+    padding: 0 18px;
+  }
+  .nav__links {
+    gap: 12px;
+    font-size: 0.82rem;
+  }
+  .post-link {
+    padding: 16px 16px;
+  }
+  .intro h1 {
+    font-size: 1.9rem;
   }
 }
