@@ -26,8 +26,15 @@
   box-sizing: border-box;
 }
 
+html {
+  background: var(--bg);
+}
+
 body {
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
@@ -35,6 +42,10 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  flex: 1 0 auto;
 }
 
 a {
@@ -129,7 +140,10 @@ video {
 /* ------------------------------------------------------------------ index */
 
 .intro {
-  padding: 56px 0 8px;
+  /* padding-block, NOT the shorthand: this element is `class="wrap intro"`
+     and a same-specificity shorthand later in the file would reset .wrap's
+     24px inline gutter to 0. */
+  padding-block: 56px 8px;
 }
 .intro h1 {
   font-size: clamp(2rem, 5vw, 2.7rem);
@@ -195,7 +209,8 @@ video {
 /* ------------------------------------------------------------------- post */
 
 .post {
-  padding: 48px 0 72px;
+  /* Same reason as .intro: preserve .wrap's inline padding. */
+  padding-block: 48px 72px;
 }
 .post__meta {
   color: var(--dim);
@@ -360,4 +375,20 @@ video {
   content: "·";
   color: var(--dim);
   margin-right: 8px;
+}
+
+/* At phone widths the brand lockup, its "build log" label and three nav links
+   do not fit on one 64px row — the label wrapped onto a second line and shoved
+   the links together. The label is decoration; the links are navigation. */
+@media (max-width: 560px) {
+  .brand small {
+    display: none;
+  }
+  .nav__links {
+    gap: 14px;
+    font-size: 0.86rem;
+  }
+  .nav__inner {
+    gap: 12px;
+  }
 }

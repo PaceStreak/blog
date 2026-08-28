@@ -6,6 +6,18 @@ Notable changes to the blog itself, not to its posts.
 
 ### Fixed
 
+- **Layout: `.intro` and `.post` were killing their own horizontal gutter.**
+  Both elements carry `class="wrap intro"` / `class="wrap post"`, and their
+  `padding` shorthand sat later in the stylesheet at the same specificity as
+  `.wrap`, resetting `padding-inline` to 0. The heading therefore sat 24px
+  left of the post card, and on a phone the text ran to the screen edge.
+  Now `padding-block`, so `.wrap`'s gutter survives. Same class of bug as the
+  landing page's activity grid.
+- **The page did not fill the viewport**, so the footer floated mid-screen on
+  short pages. `body` is now a flex column with `min-height: 100vh`.
+- **Cramped mobile nav.** The brand's "build log" label wrapped onto a second
+  row at phone widths and squeezed the links; it is hidden below 560px.
+
 - **No 404 page.** Cloudflare Pages answered every unknown path with index.html
   and a 200. That was not only a soft 404: with no `robots.txt` in the build,
   `/robots.txt` returned the site's HTML, and Cloudflare concatenated it onto
