@@ -1,6 +1,6 @@
 # Contributing
 
-This is a personal build log, so "contributing" mostly means _writing a post_.
+This is a personal blog, so "contributing" mostly means _writing a post_.
 For contributions to PaceStreak itself, see the
 [organization guide](https://github.com/PaceStreak/.github/blob/main/CONTRIBUTING.md).
 

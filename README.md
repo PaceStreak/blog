@@ -1,4 +1,4 @@
-# PaceStreak build log
+# PaceStreak Blog
 
 The blog at **[blog.pacestreak.com](https://blog.pacestreak.com)** — notes on
 building PaceStreak in the open.

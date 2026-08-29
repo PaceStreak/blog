@@ -8,7 +8,7 @@ export async function GET(context: APIContext) {
   );
 
   return rss({
-    title: "PaceStreak — build log",
+    title: "PaceStreak — Blog",
     description: "Building a workout streak tracker in the open.",
     site: context.site!,
     items: posts.map((post) => ({
