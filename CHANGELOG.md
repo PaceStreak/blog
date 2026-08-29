@@ -4,6 +4,13 @@ Notable changes to the blog itself, not to its posts.
 
 ## [Unreleased]
 
+### Changed
+
+- **The README claimed two things that were not true.** It documented a
+  `.github/workflows/deploy.yml` that does not exist — deployment is
+  Cloudflare's Git integration — and it said no JavaScript is shipped, which
+  stopped being true the moment prefetching was enabled. Both corrected.
+
 ### Fixed
 
 - **Layout: `.intro` and `.post` were killing their own horizontal gutter.**
@@ -27,6 +34,21 @@ Notable changes to the blog itself, not to its posts.
 
 ### Added
 
+- **Tag pages.** `/tags` lists every topic by post count, and `/tags/<tag>`
+  lists the posts. The schema has supported `tags` since the first commit;
+  nothing rendered them until now.
+- **Previous/next navigation** between posts, computed in `getStaticPaths`
+  where the sorted list already exists rather than re-sorting the collection
+  once per page.
+- **`BlogPosting` structured data and `article:published_time`** on every post,
+  plus `og:type=article`. Search engines previously had no author, date or
+  headline for any post.
+- Reading time and a table of contents (h2s only, and only when there are more
+  than two).
+- **Tailwind CSS v4**, compiled through `@tailwindcss/vite`. Post cards are now
+  fully clickable, with the tag links raised above the overlay so they stay
+  reachable.
+- Link prefetching on hover and in viewport.
 - `tsconfig.json` (astro/strict) — the TypeScript in `content.config.ts` and
   `rss.xml.ts` was previously unchecked.
 - Prettier, `.editorconfig`, `.nvmrc`, and an `engines` field.

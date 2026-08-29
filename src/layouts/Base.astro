@@ -6,30 +6,61 @@ interface Props {
   description: string;
   /** Canonical path, e.g. "/posts/foo". Defaults to the current URL. */
   path?: string;
+  noindex?: boolean;
+  /** Structured data. `application/ld+json` is data, not executable script,
+      so `script-src 'self'` does not apply to it. */
+  jsonLd?: unknown;
+  /** Article pages set this so link previews show a date, not a website card. */
+  ogType?: "website" | "article";
+  publishedTime?: string;
 }
 
-const { title, description, path } = Astro.props;
+const {
+  title,
+  description,
+  path,
+  noindex = false,
+  jsonLd,
+  ogType = "website",
+  publishedTime,
+} = Astro.props;
+
 const canonical = new URL(path ?? Astro.url.pathname, Astro.site);
 const ogImage = "https://www.pacestreak.com/brand/social/og.png";
 const year = new Date().getFullYear();
+
+const nav = [
+  { href: "https://www.pacestreak.com", label: "Product" },
+  { href: "/tags", label: "Tags" },
+  { href: "/rss.xml", label: "RSS" },
+  { href: "https://github.com/PaceStreak", label: "GitHub" },
+];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scheme-dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#0a0a0b" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="PaceStreak" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    {
+      publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )
+    }
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@PaceStreak" />
     <meta name="twitter:image" content={ogImage} />
@@ -42,37 +73,47 @@ const year = new Date().getFullYear();
       href="/rss.xml"
     />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
-  <body>
+
+  <body class="min-h-screen">
     <a class="skip" href="#main">Skip to content</a>
 
-    <header class="nav">
-      <div class="wrap nav__inner">
-        <a class="brand" href="/">
-          <img src="/favicon.svg" alt="" width="24" height="24" />
-          <b class="brand__word">Pace<span>Streak</span></b>
-          <small>build log</small>
+    <header class="sticky top-0 z-50 border-b border-line/80 bg-bg/85 backdrop-blur-md">
+      <nav class="wrap flex h-14 items-center justify-between gap-4" aria-label="Main">
+        <a href="/" class="flex items-baseline gap-2 font-semibold tracking-tight">
+          <span>Pace<span class="text-accent">Streak</span></span>
+          <span class="text-[0.78rem] font-normal text-dim">build log</span>
         </a>
-        <nav class="nav__links">
-          <a href="https://www.pacestreak.com">Product</a>
-          <a href="/rss.xml">RSS</a>
-          <a href="https://github.com/PaceStreak">GitHub</a>
-        </nav>
-      </div>
+        <div class="flex items-center gap-1">
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class="rounded-full px-2.5 py-1.5 text-[0.88rem] text-muted transition-colors hover:bg-surface-2 hover:text-ink"
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </div>
+      </nav>
     </header>
 
     <main id="main">
       <slot />
     </main>
 
-    <footer class="footer">
-      <div class="wrap footer__inner">
+    <footer class="mt-20 border-t border-line py-9">
+      <div
+        class="wrap flex flex-col gap-2 text-[0.87rem] text-dim sm:flex-row sm:items-center sm:justify-between"
+      >
         <span>&copy; {year} PaceStreak</span>
-        <span class="footer__links">
+        <p class="footer-links">
           <a href="https://www.pacestreak.com">pacestreak.com</a>
           <a href="https://status.pacestreak.com">Status</a>
           <a href="/rss.xml">RSS</a>
-        </span>
+        </p>
       </div>
     </footer>
   </body>

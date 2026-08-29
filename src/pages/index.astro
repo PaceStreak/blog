@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
+import PostCard from "../components/PostCard.astro";
 
 // Drafts are excluded from the index, the feed and the sitemap — set
 // `draft: true` in a post's frontmatter to keep working on it in the open.
@@ -8,42 +9,47 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 
-const fmt = (d: Date) =>
-  d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "PaceStreak build log",
+  url: "https://blog.pacestreak.com",
+  description:
+    "Building a workout streak tracker in the open. Notes on what broke, what it cost, and what I would do differently.",
+  publisher: {
+    "@type": "Organization",
+    name: "PaceStreak",
+    url: "https://www.pacestreak.com",
+  },
+};
 ---
 
 <Base
   title="PaceStreak — build log"
   description="Building a workout streak tracker in the open. Notes on what broke, what it cost, and what I would do differently."
   path="/"
+  jsonLd={jsonLd}
 >
-  <section class="wrap intro">
-    <h1>Build log</h1>
-    <p>
-      Notes from building <a
-        href="https://www.pacestreak.com"
-        style="color:var(--accent)">PaceStreak</a
+  <section class="wrap py-14 sm:py-16">
+    <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Build log</h1>
+    <p class="mt-5 text-lg leading-relaxed text-muted text-pretty">
+      Notes from building{" "}
+      <a
+        class="text-accent underline-offset-4 hover:underline"
+        href="https://www.pacestreak.com">PaceStreak</a
       >, a workout streak tracker. What broke, what it cost, and what I would do
       differently — written as it happens rather than tidied up afterwards.
     </p>
   </section>
 
-  <div class="wrap">
+  <div class="wrap pb-8">
     {
       posts.length === 0 ? (
-        <p class="empty">No posts yet. The first one is being written.</p>
+        <p class="text-muted">No posts yet. The first one is being written.</p>
       ) : (
-        <ul class="posts">
+        <ul class="grid gap-5">
           {posts.map((post) => (
-            <li>
-              <a class="post-link" href={`/posts/${post.id}`}>
-                <time datetime={post.data.date.toISOString()}>
-                  {fmt(post.data.date)}
-                </time>
-                <h2>{post.data.title}</h2>
-                <p>{post.data.description}</p>
-              </a>
-            </li>
+            <PostCard post={post} />
           ))}
         </ul>
       )

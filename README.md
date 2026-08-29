@@ -43,26 +43,45 @@ npm run build    # writes dist/
 
 ## Deploying
 
-**Push to `main`.** [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)
-builds and publishes to Cloudflare Pages, then checks the live site actually
-serves before going green.
+**Push to `main`. That is the whole process.** The Cloudflare Pages project is
+connected to this repository through Cloudflare's GitHub integration and builds
+on every push — there is no deploy workflow here and no API token to manage.
+`.github/workflows/ci.yml` exists only to fail a pull request before it reaches
+`main`.
 
 ## Layout
 
 ```text
 src/content/blog/     Your posts. The only directory you need.
 src/content.config.ts Frontmatter schema.
-src/layouts/          Page shell and post shell.
-src/pages/            Index, post route, RSS feed.
-src/styles/global.css All of the design, in one file.
-public/               favicon, _headers.
+src/layouts/Base      Head, nav, footer, structured data.
+src/components/       PostCard.
+src/lib/post.ts       Date formatting and reading time, shared so the index,
+                      the tag pages and the post template cannot disagree.
+src/pages/            Index, post route, tag pages, RSS feed, 404.
+src/styles/global.css Tailwind theme tokens + article typography.
+public/               favicon, robots.txt, _headers.
 ```
+
+Tags are automatic: put them in a post's frontmatter and `/tags` and
+`/tags/<tag>` are generated from the collection. Previous/next links, the
+reading time and the `BlogPosting` structured data are derived too — there is
+nothing to maintain by hand per post.
 
 ## Notes
 
-**No JavaScript is shipped.** Astro renders to static HTML and this site has no
-client-side components. If you add one, it will start shipping JS — which is
-fine, just know that it is a change rather than the default.
+**Almost no JavaScript is shipped.** There are no client-side components. The
+one script is Astro's ~2.5KB link prefetcher, enabled in `astro.config.mjs`,
+which warms pages on hover and in viewport. If you add a component with a
+`client:` directive it will start shipping more — fine, but it is a change
+rather than the default.
+
+**Styling is Tailwind v4**, compiled through `@tailwindcss/vite`. The play CDN
+is not usable: it is a third-party script and this site ships
+`default-src 'self'`, so it would be blocked in production while working
+perfectly in local preview. Long-form prose is the exception to utilities — the
+`.article` rules in `global.css` style markdown output that has no classes to
+hang utilities on.
 
 **Code blocks are highlighted at build time** by Shiki, so there is no
 highlighting library in the browser.

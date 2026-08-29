@@ -1,0 +1,59 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { formatDate, readingTime } from "../lib/post";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const minutes = readingTime(post.body ?? "");
+---
+
+<li>
+  {
+    /* `relative` here plus `after:absolute after:inset-0` on the title link
+      makes the whole card a click target while keeping exactly one link in the
+      accessibility tree — the tag links below stay reachable because they are
+      raised above the overlay. */
+  }
+  <article
+    class="group relative rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-line-lit sm:p-6"
+  >
+    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.82rem] text-dim">
+      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{minutes} min read</span>
+    </div>
+
+    <h2 class="mt-2 text-xl font-semibold tracking-tight">
+      <a
+        href={`/posts/${post.id}`}
+        class="transition-colors after:absolute after:inset-0 group-hover:text-accent"
+      >
+        {post.data.title}
+      </a>
+    </h2>
+
+    <p class="mt-2 text-[0.96rem] leading-relaxed text-muted">
+      {post.data.description}
+    </p>
+
+    {
+      post.data.tags.length > 0 && (
+        <ul class="relative z-10 mt-4 flex flex-wrap gap-2">
+          {post.data.tags.map((tag) => (
+            <li>
+              <a
+                href={`/tags/${tag}`}
+                class="inline-block rounded-full border border-line bg-surface-2 px-2.5 py-1 text-[0.78rem] text-dim transition-colors hover:border-accent hover:text-accent"
+              >
+                {tag}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </article>
+</li>

@@ -1,35 +1,173 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 import Base from "../../layouts/Base.astro";
+import { formatDate, readingTime } from "../../lib/post";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+
+  // Previous/next are computed here, where the sorted list already exists.
+  // Doing it inside the page would mean re-fetching and re-sorting the whole
+  // collection once per post.
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      newer: posts[index - 1] ?? null,
+      older: posts[index + 1] ?? null,
+    },
+  }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+interface Props {
+  post: CollectionEntry<"blog">;
+  newer: CollectionEntry<"blog"> | null;
+  older: CollectionEntry<"blog"> | null;
+}
 
-const fmt = (d: Date) =>
-  d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await render(post);
+const minutes = readingTime(post.body ?? "");
+const url = new URL(`/posts/${post.id}`, Astro.site).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  keywords: post.data.tags.join(", "),
+  mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  author: {
+    "@type": "Organization",
+    name: "PaceStreak",
+    url: "https://www.pacestreak.com",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "PaceStreak",
+    url: "https://www.pacestreak.com",
+    logo: { "@type": "ImageObject", url: "https://www.pacestreak.com/brand/logo.svg" },
+  },
+};
+
+// Only h2s. A table of contents that mirrors every h3 is longer than the
+// section it points at.
+const toc = headings.filter((h) => h.depth === 2);
 ---
 
 <Base
   title={`${post.data.title} — PaceStreak build log`}
   description={post.data.description}
   path={`/posts/${post.id}`}
+  ogType="article"
+  publishedTime={post.data.date.toISOString()}
+  jsonLd={jsonLd}
 >
-  <article class="wrap post">
-    <div class="post__meta">
-      <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
-    </div>
-    <h1 class="post__title">{post.data.title}</h1>
-    <p class="post__desc">{post.data.description}</p>
+  <article class="wrap py-12 sm:py-16">
+    <a href="/" class="text-[0.88rem] text-dim transition-colors hover:text-ink"
+      >&larr; All posts</a
+    >
 
-    <div class="prose">
+    <header class="mt-6">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.85rem] text-dim">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time
+        >
+        <span aria-hidden="true">·</span>
+        <span>{minutes} min read</span>
+      </div>
+
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+        {post.data.title}
+      </h1>
+
+      <p class="mt-4 text-lg text-muted text-pretty">{post.data.description}</p>
+
+      {
+        post.data.tags.length > 0 && (
+          <ul class="mt-5 flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <li>
+                <a
+                  href={`/tags/${tag}`}
+                  class="inline-block rounded-full border border-line bg-surface-2 px-2.5 py-1 text-[0.78rem] text-dim transition-colors hover:border-accent hover:text-accent"
+                >
+                  {tag}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    {
+      toc.length > 2 && (
+        <nav
+          class="mt-10 rounded-2xl border border-line bg-surface p-5"
+          aria-labelledby="toc-heading"
+        >
+          <h2
+            id="toc-heading"
+            class="text-[0.78rem] font-semibold tracking-[0.14em] text-dim uppercase"
+          >
+            On this page
+          </h2>
+          <ol class="mt-3 space-y-1.5">
+            {toc.map((heading) => (
+              <li>
+                <a
+                  href={`#${heading.slug}`}
+                  class="text-[0.94rem] text-muted transition-colors hover:text-accent"
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
+    <div class="article mt-10">
       <Content />
     </div>
 
-    <a class="back" href="/">&larr; All posts</a>
+    {
+      (newer || older) && (
+        <nav
+          class="mt-16 grid gap-4 border-t border-line pt-8 sm:grid-cols-2"
+          aria-label="More posts"
+        >
+          {older ? (
+            <a
+              href={`/posts/${older.id}`}
+              class="rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-line-lit"
+            >
+              <span class="text-[0.78rem] tracking-[0.14em] text-dim uppercase">
+                Older
+              </span>
+              <span class="mt-1.5 block font-medium">{older.data.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+
+          {newer && (
+            <a
+              href={`/posts/${newer.id}`}
+              class="rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-line-lit sm:text-right"
+            >
+              <span class="text-[0.78rem] tracking-[0.14em] text-dim uppercase">
+                Newer
+              </span>
+              <span class="mt-1.5 block font-medium">{newer.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )
+    }
   </article>
 </Base>

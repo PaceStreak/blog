@@ -1,0 +1,56 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import PostCard from "../../components/PostCard.astro";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+
+  const byTag = new Map<string, CollectionEntry<"blog">[]>();
+  for (const post of posts) {
+    for (const tag of post.data.tags) {
+      byTag.set(tag, [...(byTag.get(tag) ?? []), post]);
+    }
+  }
+
+  return [...byTag.entries()].map(([tag, tagged]) => ({
+    params: { tag },
+    props: { tag, posts: tagged },
+  }));
+}
+
+interface Props {
+  tag: string;
+  posts: CollectionEntry<"blog">[];
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<Base
+  title={`${tag} — PaceStreak build log`}
+  description={`Posts tagged ${tag} in the PaceStreak build log.`}
+  path={`/tags/${tag}`}
+>
+  <section class="wrap py-14 sm:py-16">
+    <a href="/tags" class="text-[0.88rem] text-dim transition-colors hover:text-ink"
+      >&larr; All tags</a
+    >
+    <h1
+      class="mt-6 text-4xl font-semibold tracking-tight before:text-dim before:content-['#']"
+    >
+      {tag}
+    </h1>
+    <p class="mt-4 text-muted">
+      {posts.length} post{posts.length === 1 ? "" : "s"}.
+    </p>
+  </section>
+
+  <div class="wrap pb-8">
+    <ul class="grid gap-5">
+      {posts.map((post) => <PostCard post={post} />)}
+    </ul>
+  </div>
+</Base>

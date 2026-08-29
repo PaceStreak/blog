@@ -1,429 +1,227 @@
-/* PaceStreak build log.
-   One stylesheet. The whole point of this blog is that writing a post means
-   adding a markdown file and nothing else, so the design lives here and is
-   never touched again. */
+/* PaceStreak build log — tokens shared with www.pacestreak.com, plus the
+   article typography that Tailwind utilities are a poor fit for.
 
-:root {
-  --bg: #0a0a0b;
-  --surface: #141417;
-  --border: #26262c;
-  --border-lit: #34343d;
-  --text: #f4f4f5;
-  --muted: #a1a1aa;
-  --dim: #8b8b95; /* 5.9:1 on --bg: WCAG AA. #71717a was 4.09:1 and failed. */
-  --accent: #d3ff3e;
-  --accent-ink: #14170a;
+   Compiled at build time by @tailwindcss/vite. The play CDN is not usable
+   here: the CSP is `default-src 'self'`, so it would be blocked in production
+   while working fine in local preview. */
 
-  --font:
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0a0b;
+  --color-bg-alt: #0e0e10;
+  --color-surface: #141417;
+  --color-surface-2: #1a1a1e;
+  --color-line: #26262c;
+  --color-line-lit: #34343d;
+
+  --color-ink: #f4f4f5;
+  --color-muted: #a1a1aa;
+  /* 5.87:1 on --color-bg. The old #71717a measured 4.09:1 and failed AA. */
+  --color-dim: #8b8b95;
+
+  --color-accent: #d3ff3e;
+  --color-accent-ink: #14170a;
+
+  --font-sans:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --container-wrap: 46rem;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  background: var(--bg);
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 17px;
-  line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-main {
-  flex: 1 0 auto;
-}
-
-a {
-  color: inherit;
-}
-img,
-video {
-  max-width: 100%;
-  height: auto;
-}
-
-.wrap {
-  width: 100%;
-  max-width: var(--wrap, 720px);
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-.skip {
-  position: absolute;
-  left: -9999px;
-}
-.skip:focus {
-  left: 8px;
-  top: 8px;
-  background: var(--accent);
-  color: var(--accent-ink);
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: 700;
-  z-index: 10;
-}
-
-/* ------------------------------------------------------------------- nav */
-
-.nav {
-  border-bottom: 1px solid var(--border);
-}
-.nav__inner {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  height: 64px;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  text-decoration: none;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-.brand img {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  display: block;
-}
-.brand span {
-  color: var(--muted);
-  font-weight: 700;
-}
-.brand small {
-  color: var(--dim);
-  font-weight: 600;
-  font-size: 0.8rem;
-  letter-spacing: 0;
-  margin-left: 2px;
-}
-
-.nav__links {
-  margin-left: auto;
-  display: flex;
-  gap: 20px;
-  font-size: 0.92rem;
-}
-.nav__links a {
-  color: var(--muted);
-  text-decoration: none;
-}
-.nav__links a:hover {
-  color: var(--text);
-}
-
-/* ------------------------------------------------------------------ index */
-
-.intro {
-  /* padding-block, NOT the shorthand: this element is `class="wrap intro"`
-     and a same-specificity shorthand later in the file would reset .wrap's
-     24px inline gutter to 0. */
-  padding-block: 56px 8px;
-}
-.intro h1 {
-  font-size: clamp(2rem, 5vw, 2.7rem);
-  letter-spacing: -0.035em;
-  line-height: 1.1;
-  margin: 0 0 12px;
-  font-weight: 800;
-}
-.intro p {
-  color: var(--muted);
-  margin: 0;
-  max-width: 56ch;
-}
-
-.posts {
-  list-style: none;
-  margin: 40px 0 72px;
-  padding: 0;
-}
-.posts li + li {
-  margin-top: 4px;
-}
-
-.post-link {
-  display: block;
-  text-decoration: none;
-  padding: 20px 22px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  transition:
-    border-color 0.16s ease,
-    transform 0.16s ease;
-}
-.post-link:hover {
-  border-color: var(--border-lit);
-  transform: translateY(-1px);
-}
-.post-link time {
-  color: var(--dim);
-  font-size: 0.82rem;
-  font-variant-numeric: tabular-nums;
-}
-.post-link h2 {
-  margin: 6px 0 6px;
-  font-size: 1.18rem;
-  letter-spacing: -0.02em;
-}
-.post-link p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.96rem;
-}
-
-.empty {
-  color: var(--muted);
-  border: 1px dashed var(--border);
-  border-radius: 12px;
-  padding: 32px;
-  text-align: center;
-}
-
-/* ------------------------------------------------------------------- post */
-
-.post {
-  /* Same reason as .intro: preserve .wrap's inline padding. */
-  padding-block: 48px 72px;
-}
-.post__meta {
-  color: var(--dim);
-  font-size: 0.85rem;
-  font-variant-numeric: tabular-nums;
-}
-.post__title {
-  font-size: clamp(1.9rem, 4.6vw, 2.5rem);
-  letter-spacing: -0.035em;
-  line-height: 1.14;
-  margin: 10px 0 14px;
-  font-weight: 800;
-}
-.post__desc {
-  color: var(--muted);
-  margin: 0 0 32px;
-  font-size: 1.05rem;
-}
-
-.prose {
-}
-.prose > * + * {
-  margin-top: 1.15em;
-}
-.prose h2 {
-  font-size: 1.45rem;
-  letter-spacing: -0.025em;
-  margin-top: 2em;
-}
-.prose h3 {
-  font-size: 1.16rem;
-  letter-spacing: -0.015em;
-  margin-top: 1.6em;
-}
-.prose a {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.prose strong {
-  color: #fff;
-}
-.prose ul,
-.prose ol {
-  padding-left: 1.3em;
-}
-.prose li + li {
-  margin-top: 0.4em;
-}
-.prose blockquote {
-  border-left: 3px solid var(--accent);
-  margin-left: 0;
-  padding-left: 18px;
-  color: var(--muted);
-  font-style: normal;
-}
-.prose code {
-  font-family: var(--mono);
-  font-size: 0.88em;
-  background: #1c1c21;
-  padding: 0.15em 0.4em;
-  border-radius: 5px;
-}
-.prose pre {
-  background: #141417 !important;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px 18px;
-  overflow-x: auto;
-  font-size: 0.87rem;
-  line-height: 1.6;
-}
-.prose pre code {
-  background: none;
-  padding: 0;
-  font-size: inherit;
-}
-.prose img {
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-.prose hr {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 2.4em 0;
-}
-.prose table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.94rem;
-  display: block;
-  overflow-x: auto;
-}
-.prose th,
-.prose td {
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  text-align: left;
-}
-.prose th {
-  background: var(--surface);
-}
-
-.back {
-  display: inline-block;
-  margin-top: 48px;
-  color: var(--muted);
-  text-decoration: none;
-}
-.back:hover {
-  color: var(--accent);
-}
-
-/* ----------------------------------------------------------------- footer */
-
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 0;
-}
-.footer__inner {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  color: var(--dim);
-  font-size: 0.87rem;
-}
-.footer a {
-  color: var(--muted);
-  text-decoration: none;
-}
-.footer a:hover {
-  color: var(--text);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.001ms !important;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
   }
-}
 
-/* The wordmark is one flex child, not two — otherwise `.brand`'s gap opens a
-   space inside the name and it reads "Pace Streak". */
-.brand__word {
-  font-weight: 800;
-}
-.brand__word span {
-  color: var(--muted);
-  font-weight: 700;
-}
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
 
-/* Separators drawn by CSS rather than typed between links, so they cannot pick
-   up or lose stray whitespace from the markup. */
-.footer__links {
-  display: inline-flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.footer__links a + a::before {
-  content: "·";
-  color: var(--dim);
-  margin-right: 8px;
-}
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 
-/* At phone widths the brand lockup, its "build log" label and three nav links
-   do not fit on one 64px row — the label wrapped onto a second line and shoved
-   the links together. The label is decoration; the links are navigation. */
-@media (max-width: 560px) {
-  .brand small {
-    display: none;
-  }
-  .nav__links {
-    gap: 14px;
-    font-size: 0.86rem;
-  }
-  .nav__inner {
-    gap: 12px;
-  }
-}
-
-/* ------------------------------------------------------------ Large screens */
-/* A 720px measure is right for reading prose, so the column does not grow much
-   — but the type was pinned at 17px, which reads small on a 1440+ display. */
-@media (min-width: 1440px) {
-  :root {
-    --wrap: 800px;
-  }
   body {
-    font-size: 18.5px;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  .intro h1 {
-    font-size: 3.1rem;
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
-  .post__title {
-    font-size: 2.9rem;
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
   }
 }
 
-/* ------------------------------------------------------------ Small screens */
-@media (max-width: 380px) {
+@layer components {
   .wrap {
-    padding: 0 18px;
+    width: 100%;
+    max-width: var(--container-wrap);
+    margin-inline: auto;
+    /* padding-inline, never the `padding` shorthand — a shorthand added later
+       resets this to 0 and collapses the gutter on mobile. */
+    padding-inline: 24px;
   }
-  .nav__links {
-    gap: 12px;
-    font-size: 0.82rem;
+
+  .skip {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    padding: 12px 18px;
+    font-weight: 600;
   }
-  .post-link {
-    padding: 16px 16px;
+
+  .skip:focus {
+    left: 0;
   }
-  .intro h1 {
-    font-size: 1.9rem;
+
+  /* Drawn in CSS, never typed between the links: a typed separator depends on
+     newline whitespace, which Astro collapses. check-html.py fails the build
+     if one is typed inside a footer link list. */
+  .footer-links a + a::before {
+    content: "·";
+    margin-inline: 0.55rem;
+    color: var(--color-line-lit);
+  }
+
+  /* --- article ---------------------------------------------------------
+     Long-form prose is the one place utility classes lose: the rules apply to
+     markdown output that has no classes to hang them on. */
+
+  .article > * + * {
+    margin-block-start: 1.15em;
+  }
+
+  .article h2 {
+    font-size: 1.42rem;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    margin-block-start: 2.6em;
+    scroll-margin-top: 5rem;
+  }
+
+  .article h3 {
+    font-size: 1.12rem;
+    font-weight: 650;
+    margin-block-start: 2em;
+    scroll-margin-top: 5rem;
+  }
+
+  .article p,
+  .article li {
+    color: var(--color-muted);
+  }
+
+  .article strong {
+    color: var(--color-ink);
+    font-weight: 650;
+  }
+
+  .article a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
+  .article a:hover {
+    text-decoration-color: var(--color-accent);
+  }
+
+  .article ul,
+  .article ol {
+    padding-inline-start: 1.3rem;
+  }
+
+  .article ul {
+    list-style: disc;
+  }
+
+  .article ol {
+    list-style: decimal;
+  }
+
+  .article li + li {
+    margin-block-start: 0.45em;
+  }
+
+  .article blockquote {
+    border-inline-start: 3px solid var(--color-accent);
+    padding-inline-start: 1.1rem;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+
+  /* Inline code only. The `:not(pre code)` guard matters: without it these
+     rules also hit every token inside a highlighted block and undo Shiki. */
+  .article :not(pre) > code {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-line);
+    border-radius: 5px;
+    padding: 0.12em 0.38em;
+    font-family: var(--font-mono);
+    font-size: 0.87em;
+    color: var(--color-ink);
+  }
+
+  .article pre {
+    background: var(--color-surface) !important;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    padding: 1.05rem 1.15rem;
+    /* Code must scroll inside its own box. Without this the page itself
+       scrolls sideways on a phone for one long line. */
+    overflow-x: auto;
+    font-size: 0.86rem;
+    line-height: 1.6;
+  }
+
+  .article table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+    display: block;
+    overflow-x: auto;
+  }
+
+  .article th,
+  .article td {
+    border: 1px solid var(--color-line);
+    padding: 0.55rem 0.75rem;
+    text-align: left;
+  }
+
+  .article th {
+    background: var(--color-surface);
+    font-weight: 650;
+  }
+
+  .article hr {
+    border: 0;
+    border-top: 1px solid var(--color-line);
+    margin-block: 2.6em;
   }
 }

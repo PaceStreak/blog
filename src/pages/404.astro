@@ -12,17 +12,23 @@ import Base from "../layouts/Base.astro";
   title="Page not found — PaceStreak build log"
   description="That page does not exist."
   path="/404"
+  noindex
 >
-  <section class="wrap intro">
-    <h1>404</h1>
-    <p>
+  <section class="wrap py-24 text-center sm:py-32">
+    <p class="text-[0.78rem] font-semibold tracking-[0.14em] text-dim uppercase">404</p>
+    <h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+      Nothing here.
+    </h1>
+    <p class="mt-4 text-muted">
       That post or page doesn't exist. It may have been renamed, or the link may never
       have pointed anywhere.
     </p>
-    <p style="margin-top:24px">
-      <a href="/" style="color:var(--accent)">All posts</a> &middot; <a
-        href="https://www.pacestreak.com"
-        style="color:var(--accent)">PaceStreak</a
+
+    <p class="footer-links mt-8 text-[0.95rem]">
+      <a class="text-accent hover:underline" href="/">All posts</a>
+      <a class="text-accent hover:underline" href="/tags">Tags</a>
+      <a class="text-accent hover:underline" href="https://www.pacestreak.com"
+        >PaceStreak</a
       >
     </p>
   </section>
