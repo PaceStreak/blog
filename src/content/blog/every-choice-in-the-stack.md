@@ -251,25 +251,72 @@ so a new version cannot break CI without a reviewable commit. If it becomes an
 obstacle, swapping it for mypy is a `pyproject.toml` change rather than a
 rewrite — nothing depends on ty-specific syntax.
 
-### What choosing FastAPI cost
+### Where the API runs
 
-This is the most consequential decision in the whole project, and it is worth
-being blunt about the bill.
+> **Correction, 30 August 2026.** This section originally claimed that choosing
+> FastAPI ruled out Cloudflare Workers, and that the API would therefore be the
+> first component of PaceStreak that is not free. **That was wrong**, and the
+> original wording is quoted below rather than deleted.
 
-Everything else here is free-tier serverless on Cloudflare. The architecture
-notes originally said Workers plus D1 was the path of least resistance, on
-exactly those grounds.
+Everything else here is free-tier serverless on Cloudflare, so Workers plus D1
+was the obvious first thought for the API too.
 
-**FastAPI closes that path.** Cloudflare's Python Workers run under Pyodide and
-will not carry FastAPI together with a real database driver. So the API needs a
-container host, and it will be the first component of PaceStreak that is not
-free.
+What I wrote was:
 
-That is a real cost accepted for a real reason, and the mitigation is that
-nothing about it is locked in: the Dockerfile produces a ~64MB non-root image
-that any container host will take. Cloud Run and Fly both scale to zero and stay
-near-free at this traffic. Whatever runs it still sits behind Cloudflare's proxy
-on `api.pacestreak.com`, so the edge, TLS and WAF are unchanged.
+> **FastAPI closes that path.** Cloudflare's Python Workers run under Pyodide
+> and will not carry FastAPI together with a real database driver.
+
+Half of that is true and the conclusion drawn from it is not. Python Workers
+are Pyodide-based and cannot load C extensions, so `asyncpg` and `psycopg` are
+genuinely unavailable — that part holds. But **FastAPI itself is explicitly
+supported**, and Cloudflare publishes a
+[`fastapi-todo` example](https://github.com/cloudflare/python-workers-examples)
+that runs FastAPI on Workers against D1. The missing driver does not matter,
+because you reach the database through a **binding** rather than a driver:
+
+```python
+def _db(request: Request):
+    return request.scope["env"].DB       # D1, via the ASGI scope
+
+@app.get("/todos")
+async def list_todos(request: Request):
+    results = await _db(request).prepare("SELECT * FROM todos").all()
+```
+
+I had inferred "no driver, therefore no database, therefore no FastAPI" without
+checking whether the platform provided a different route to the data. It did.
+
+So the honest position is that **hosting is still open**, and Workers is back on
+the list:
+
+|                      | Python Workers                            | A container host             |
+| -------------------- | ----------------------------------------- | ---------------------------- |
+| Runtime status       | Open beta, `python_workers` flag          | GA                           |
+| Cost at this traffic | Free — 100k requests/day                  | Near-free with scale-to-zero |
+| Real constraint      | **10ms CPU per request** on the free plan | Cold starts                  |
+| Packages             | Pure-Python and PyEmscripten wheels only  | Anything                     |
+| Database             | D1 binding                                | Any Postgres                 |
+
+The 10ms figure is CPU time, not wall time — waiting on D1 does not count
+against it — so ordinary CRUD sits well inside it. The place it would bite is
+exactly the thing this product promises: a full CSV export of a long training
+history is real work in the request path.
+
+Neither option is locked in. The Dockerfile produces a ~64MB non-root image that
+any container host will take, and either way the service sits behind
+Cloudflare's proxy on `api.pacestreak.com`, so the edge, TLS and WAF are
+unchanged. The one genuine lock-in is that `request.scope["env"].DB` line, which
+is Workers-specific — putting data access behind a repository module from the
+first endpoint keeps the choice reversible.
+
+**The reusable lesson is the shape of the mistake, not the fact.** A limitation
+was real, I extrapolated a conclusion from it, and I did not check the docs
+because the reasoning felt airtight. That is the second time this project has
+produced exactly that error: earlier I concluded a direct-upload Pages project
+could not be connected to Git because the API reported `source: NONE`, and later
+that Pages projects could not be renamed because `wrangler` exposes no rename
+command. Absent from the CLI, or absent from the API response, is evidence about
+the CLI and the API — not about the platform.
 
 ### Docker, Postgres, Redis
 
@@ -336,8 +383,9 @@ contributor who skips them breaks `main`.
 
 ## What is deliberately still open
 
-- **Where the API runs.** Cloud Run and Fly are the shortlist; nothing is
-  decided, and the Dockerfile keeps every option available.
+- **Where the API runs.** Python Workers with D1, or a container host such as
+  Cloud Run or Fly. Nothing is decided, and the Dockerfile keeps every option
+  available.
 - **Database and ORM.** Coupled to the hosting decision, and picking a managed
   Postgres before picking a host is how a service ends up paying egress on every
   query.
