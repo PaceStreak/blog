@@ -10,7 +10,7 @@
   --border-lit: #34343d;
   --text: #f4f4f5;
   --muted: #a1a1aa;
-  --dim: #71717a;
+  --dim: #8b8b95; /* 5.9:1 on --bg: WCAG AA. #71717a was 4.09:1 and failed. */
   --accent: #d3ff3e;
   --accent-ink: #14170a;
 
