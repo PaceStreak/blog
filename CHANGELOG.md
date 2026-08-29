@@ -34,6 +34,17 @@ Notable changes to the blog itself, not to its posts.
 
 ### Added
 
+- **A content security policy.** This site had none at all — `public/_headers`
+  set every other security header and simply omitted the CSP, while the README,
+  the organisation contributing guide and a post all claimed otherwise.
+  `script-src` is strict `'self'`; `style-src` allows `'unsafe-inline'` because
+  Shiki colours every token with a `style` attribute at build time, and under a
+  strict policy the browser drops each one silently — every code block renders
+  as flat, colourless text in production while looking perfect locally.
+- **Cross-document view transitions, in CSS.** Zero JavaScript; supported
+  browsers cross-fade between posts, the rest navigate as before.
+- `check-html.py` now fails on inline `style` attributes, with `<pre>` exempt
+  for the Shiki reason above.
 - **Tag pages.** `/tags` lists every topic by post count, and `/tags/<tag>`
   lists the posts. The schema has supported `tags` since the first commit;
   nothing rendered them until now.

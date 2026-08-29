@@ -3,6 +3,24 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.pacestreak.com data:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+# `style-src` allows 'unsafe-inline' here and www.pacestreak.com's does not.
+# That is deliberate, and worth understanding before copying either file:
+#
+# Shiki highlights code at BUILD time and colours it with a `style` attribute on
+# every single token. Under `style-src 'self'` the browser drops each of those
+# declarations silently, and every code block on the blog renders as flat
+# uncoloured text - working perfectly in local preview, broken in production.
+# The alternative is shipping no CSP at all, which is what this file did until
+# now.
+#
+# The trade is acceptable because the dangerous half is `script-src`, which
+# stays strict at 'self' with no 'unsafe-inline'. Inline styles cannot execute;
+# they are an exfiltration and defacement risk, not an XSS one, and this site
+# renders no user input.
+#
+# img-src includes www.pacestreak.com because the OG card is served from there.
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

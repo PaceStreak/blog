@@ -7,6 +7,23 @@
 
 @import "tailwindcss";
 
+/* Cross-document view transitions, in CSS, with no JavaScript.
+   The browser holds the old page on screen while it fetches the new document
+   and cross-fades - so moving between posts stops looking like a reload.
+   Chromium 126+ and Safari 18.2+ animate; everything else navigates exactly as
+   before. Nothing to polyfill, nothing shipped. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 @theme {
   --color-bg: #0a0a0b;
   --color-bg-alt: #0e0e10;
@@ -95,6 +112,14 @@
 
   .skip:focus {
     left: 0;
+  }
+
+  /* Named so the header is treated as the same element across a navigation
+     rather than cross-fading into a copy of itself. Declared here and not as a
+     style="" attribute: `style-src 'self'` drops inline style attributes, and
+     it does so silently. */
+  .site-header {
+    view-transition-name: site-header;
   }
 
   /* Drawn in CSS, never typed between the links: a typed separator depends on

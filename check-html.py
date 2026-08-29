@@ -49,6 +49,22 @@ LD_JSON = re.compile(r"<script[^>]*type=\"application/ld\+json\"[^>]*>.*?</scrip
 INLINE_SCRIPT = re.compile(r"<script[^>]*>[^<]")
 DATA_URI = re.compile(r"(?:src|href)=\"data:(?!image/)")
 
+# `style-src 'self'` blocks inline style ATTRIBUTES too, not just <style>
+# blocks, and it does it silently - the declaration is simply dropped and the
+# element renders unstyled. Adding a `view-transition-name` this way is how
+# that nearly shipped. Put the rule in the stylesheet instead.
+#
+# Note this deliberately does not fire on `<style>` elements: Astro hoists all
+# component CSS into an external file, so a literal <style> block in dist/ is
+# itself worth investigating, but the attribute is the common mistake.
+INLINE_STYLE_ATTR = re.compile(r"<[a-zA-Z][^>]*\sstyle=\"[^\"]")
+
+# Highlighted code is the one legitimate source of inline styles: Shiki colours
+# every token with a style attribute at build time. The blog's CSP allows
+# 'unsafe-inline' for style-src precisely so those survive, so scanning inside
+# <pre> would report hundreds of findings that are all working as intended.
+PRE_BLOCK = re.compile(r"<pre\b.*?</pre>", re.S)
+
 
 def check(path: pathlib.Path) -> list[str]:
     html = path.read_text()
@@ -78,6 +94,12 @@ def check(path: pathlib.Path) -> list[str]:
     if DATA_URI.search(stripped):
         problems.append(
             f"{path.name}: data: URI in src/href — the CSP blocks it"
+        )
+    for m in INLINE_STYLE_ATTR.finditer(PRE_BLOCK.sub("", stripped)):
+        tag = m.group(0)[:70]
+        problems.append(
+            f"{path.name}: inline style attribute — `style-src 'self'` drops it "
+            f"silently: {tag}…"
         )
     return problems
 
