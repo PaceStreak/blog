@@ -6,6 +6,10 @@ Notable changes to the blog itself, not to its posts.
 
 ### Added
 
+- Ten posts covering everything built so far: streaks, XP, offline sync, auth,
+  social privacy, the worker, data ownership, pauses and file import, the
+  website rebuild, and a status report.
+
 - **A content security policy.** This site had none at all — `public/_headers`
   set every other security header and simply omitted the CSP, while the README,
   the organisation contributing guide and a post all claimed otherwise.
