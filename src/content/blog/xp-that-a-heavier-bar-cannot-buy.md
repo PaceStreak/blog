@@ -20,17 +20,17 @@ Everything below follows from it.
 
 ## Where XP comes from
 
-| Source | XP | Why |
-| --- | --- | --- |
-| A training day | 20 | Showing up is the thing being rewarded. |
-| A second session that day | 5 | Doubles are real, but splitting one workout into five must not pay. Anything after the second pays nothing. |
-| Days beyond target + 1 | 5 instead of 20 | Training every single day is not better than the plan with rest in it. |
-| A day logged with detail | 5 | Flat. It rewards completeness, never magnitude. |
-| A kept week | 50 | The unit of the streak. |
-| A frozen or repaired week | 0 | It keeps the streak alive, but a forgiven week isn't an earned one. |
-| Streak milestones | 100 to 2,000 | At 4, 8, 12, 26, 52, 104 and 156 weeks. |
-| A rewarded personal record | 25 | Relative to your own history (see below). |
-| Achievements | 50 / 100 / 200 | By tier. |
+| Source                     | XP              | Why                                                                                                         |
+| -------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------- |
+| A training day             | 20              | Showing up is the thing being rewarded.                                                                     |
+| A second session that day  | 5               | Doubles are real, but splitting one workout into five must not pay. Anything after the second pays nothing. |
+| Days beyond target + 1     | 5 instead of 20 | Training every single day is not better than the plan with rest in it.                                      |
+| A day logged with detail   | 5               | Flat. It rewards completeness, never magnitude.                                                             |
+| A kept week                | 50              | The unit of the streak.                                                                                     |
+| A frozen or repaired week  | 0               | It keeps the streak alive, but a forgiven week isn't an earned one.                                         |
+| Streak milestones          | 100 to 2,000    | At 4, 8, 12, 26, 52, 104 and 156 weeks.                                                                     |
+| A rewarded personal record | 25              | Relative to your own history (see below).                                                                   |
+| Achievements               | 50 / 100 / 200  | By tier.                                                                                                    |
 
 There's no multiplier for weight, distance or duration anywhere in that table.
 A beginner walking three times a week and an elite lifter training three times

@@ -15,5 +15,7 @@ export const GET: APIRoute = async ({ props }) => {
     meta: `${formatDate(post.data.date)} · ${readingTime(post.body ?? "")} min read`,
     tags: post.data.tags,
   });
-  return new Response(new Uint8Array(png), { headers: { "Content-Type": "image/png" } });
+  return new Response(new Uint8Array(png), {
+    headers: { "Content-Type": "image/png" },
+  });
 };
