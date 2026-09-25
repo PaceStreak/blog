@@ -47,7 +47,7 @@ curve, so early levels arrive quickly and later ones stretch out. Titles run
 Novice, Regular, Consistent, Committed, Seasoned, Veteran, and the docstring is
 explicit about what they measure:
 
-> Titles describe *training maturity*: how long and how steadily someone has
+> Titles describe _training maturity_: how long and how steadily someone has
 > shown up, and never strength or body weight. A consistent beginner outranks a
 > strong lifter who trains when they feel like it.
 

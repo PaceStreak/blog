@@ -96,7 +96,7 @@ after years of training, and it removes a whole category of bug. Stored streak
 state drifts: an edit to last month's session, a timezone change, an import, a
 deleted duplicate. Each one needs correction logic, and each correction is a
 chance to be wrong. When the streak is a function of the log, editing the log
-*is* the correction.
+_is_ the correction.
 
 The same principle runs through XP, records and achievements, which the
 [next post](/posts/xp-that-a-heavier-bar-cannot-buy) covers.
