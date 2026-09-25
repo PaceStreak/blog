@@ -63,6 +63,19 @@ jobs:
             echo "ok $f"
           done
 
+      # Every post page must have its share card, or links to it unfurl
+      # with a broken image.
+      - name: Assert every post has a share card
+        run: |
+          for page in dist/posts/*.html; do
+            slug="$(basename "$page" .html)"
+            if [ ! -s "dist/og/$slug.png" ]; then
+              echo "::error::dist/og/$slug.png missing"
+              exit 1
+            fi
+          done
+          echo "ok $(ls dist/og | wc -l) share cards"
+
   markdown:
     name: Lint markdown
     runs-on: ubuntu-latest

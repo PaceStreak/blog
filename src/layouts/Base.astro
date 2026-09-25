@@ -13,6 +13,8 @@ interface Props {
   /** Article pages set this so link previews show a date, not a website card. */
   ogType?: "website" | "article";
   publishedTime?: string;
+  /** Absolute or root-relative; defaults to the site-wide card. */
+  ogImage?: string;
 }
 
 const {
@@ -23,10 +25,13 @@ const {
   jsonLd,
   ogType = "website",
   publishedTime,
+  ogImage: ogImagePath,
 } = Astro.props;
 
 const canonical = new URL(path ?? Astro.url.pathname, Astro.site);
-const ogImage = "https://www.pacestreak.com/brand/social/og.png";
+const ogImage = ogImagePath
+  ? new URL(ogImagePath, Astro.site).href
+  : "https://www.pacestreak.com/brand/social/og.png";
 const year = new Date().getFullYear();
 
 const nav = [
@@ -64,6 +69,7 @@ const nav = [
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@PaceStreak" />
     <meta name="twitter:image" content={ogImage} />
+    <meta property="og:image:alt" content={title} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link

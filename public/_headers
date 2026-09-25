@@ -24,3 +24,8 @@
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Share cards are regenerated on every build but a post's card rarely
+# changes; a day is plenty, and link-preview crawlers re-fetch anyway.
+/og/*
+  Cache-Control: public, max-age=86400
