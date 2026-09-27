@@ -60,12 +60,7 @@ export async function renderCard({ title, meta, tags }: CardInput): Promise<Buff
         h(
           "svg",
           { width: 44, height: 44 },
-          [
-            h("rect", {}, undefined, { x: 6, y: 9, width: 52, height: 49, rx: 5, fill: "#141417", stroke: INK, "stroke-width": 3 }),
-            h("path", {}, undefined, { d: "M6 14a5 5 0 0 1 5-5h42a5 5 0 0 1 5 5v7H6z", fill: ACCENT, stroke: INK, "stroke-width": 3 }),
-            h("path", {}, undefined, { d: "M21 5v9M43 5v9", stroke: INK, "stroke-width": 4, "stroke-linecap": "round" }),
-            h("path", {}, undefined, { d: "M19.5 29.5c8 6 16 13.5 25 21.5M45 29c-9.5 7-17 14-25 21.5", fill: "none", stroke: ACCENT, "stroke-width": 6, "stroke-linecap": "round" }),
-          ],
+          [h("path", {}, undefined, { d: "M39 5 8 39h19L25 59 56 25H37L39 5Z", fill: ACCENT })],
           { viewBox: "0 0 64 64" },
         ),
         h("div", { display: "flex", fontSize: 32, fontWeight: 700, color: INK }, [
