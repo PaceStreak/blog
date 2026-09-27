@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import PostCard from "../components/PostCard.astro";
+import FeaturedPost from "../components/FeaturedPost.astro";
 import MarkX from "../components/MarkX.astro";
 
 // Drafts are excluded from the index, the feed and the sitemap — set
@@ -51,11 +52,19 @@ const jsonLd = {
       posts.length === 0 ? (
         <p class="text-muted">No posts yet. The first one is being written.</p>
       ) : (
-        <ul class="grid gap-3">
-          {posts.map((post) => (
-            <PostCard post={post} />
-          ))}
-        </ul>
+        <>
+          <FeaturedPost post={posts[0]} />
+
+          {
+            posts.length > 1 && (
+              <ul class="mt-2">
+                {posts.slice(1).map((post) => (
+                  <PostCard post={post} />
+                ))}
+              </ul>
+            )
+          }
+        </>
       )
     }
   </div>

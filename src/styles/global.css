@@ -196,6 +196,45 @@
     padding-inline: 24px;
   }
 
+  /* Wider than `.wrap`: the post template needs room for the article's own
+     measure plus a table-of-contents rail beside it. Everything else keeps
+     the narrower `.wrap` on purpose — a listing page is not competing with a
+     sidebar. */
+  .wrap-post {
+    width: 100%;
+    max-width: 62rem;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  /* Article body and the TOC rail beside it. One column until there is room
+     for both without squeezing the measure below 65ch. */
+  .post-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 3.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .post-layout {
+      grid-template-columns: minmax(0, 1fr) 15rem;
+      align-items: start;
+    }
+  }
+
+  /* A divided list, not a repeated bordered card: hovering a row tints its
+     own band rather than lifting a box. */
+  .post-row {
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+    border-radius: 10px;
+    transition: background-color 180ms var(--ease-out);
+  }
+
+  .post-row:hover {
+    background: var(--color-surface);
+  }
+
   .skip {
     position: absolute;
     left: -9999px;
@@ -250,29 +289,62 @@
      Long-form prose is the one place utility classes lose: the rules apply to
      markdown output that has no classes to hang them on. */
 
+  /* The measure, not the container, sets the line length: `ch` holds ~68
+     characters regardless of viewport, so the sidebar layout above can give
+     the column extra room without the text itself running wider. */
+  .article {
+    max-width: 68ch;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+
   .article > * + * {
     margin-block-start: 1.15em;
   }
 
+  /* More space above a heading than below it — the break belongs to the
+     section it opens, not the one it closes. A heading right after another
+     heading (rare, but markdown allows it) shouldn't inherit the large gap. */
   .article h2 {
     font-size: 1.42rem;
     font-weight: 650;
     letter-spacing: -0.015em;
     line-height: 1.3;
     margin-block-start: 2.6em;
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 5.5rem;
   }
 
   .article h3 {
     font-size: 1.12rem;
     font-weight: 650;
     margin-block-start: 2em;
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 5.5rem;
+  }
+
+  .article h2 + h3 {
+    margin-block-start: 1.1em;
+  }
+
+  /* The paragraph right under a heading sits closer to it than the generic
+     rhythm gives — the heading is its label, not a separate block. */
+  .article h2 + p,
+  .article h3 + p {
+    margin-block-start: 0.85em;
   }
 
   .article p,
   .article li {
     color: var(--color-muted);
+  }
+
+  /* The lede: the opening line is the reader's decision point, so it reads a
+     size up and in the full ink colour, then the piece settles into body
+     size. Only fires on the paragraph that opens the article, never on one
+     that follows a heading. */
+  .article > p:first-child {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: var(--color-ink);
   }
 
   .article strong {
@@ -332,11 +404,32 @@
     margin-block-start: 0.45em;
   }
 
+  /* A pull quote, not a callout: the accent lives in the glyph, the rule
+     stays hairline-thin, and the text steps up in size instead of leaning on
+     italics to signal "this is different". */
   .article blockquote {
-    border-inline-start: 3px solid var(--color-accent);
-    padding-inline-start: 1.1rem;
-    color: var(--color-muted);
-    font-style: italic;
+    position: relative;
+    border-inline-start: 1px solid var(--color-line-lit);
+    margin-block: 1.8em;
+    padding-block: 0.1em;
+    padding-inline-start: 1.5rem;
+    font-size: 1.18em;
+    line-height: 1.55;
+    color: var(--color-ink);
+  }
+
+  .article blockquote::before {
+    content: "“";
+    position: absolute;
+    inset-inline-start: 0.35rem;
+    inset-block-start: -0.1em;
+    font-size: 1.6em;
+    line-height: 1;
+    color: var(--color-accent);
+  }
+
+  .article blockquote p {
+    color: inherit;
   }
 
   /* Inline code only. The `:not(pre code)` guard matters: without it these
@@ -365,27 +458,135 @@
 
   .article table {
     width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
-    font-size: 0.94rem;
+    font-size: 0.92rem;
+    font-variant-numeric: tabular-nums;
     display: block;
     overflow-x: auto;
+    border-radius: 10px;
   }
 
   .article th,
   .article td {
-    border: 1px solid var(--color-line);
-    padding: 0.55rem 0.75rem;
+    border-block-end: 1px solid var(--color-line);
+    padding: 0.6rem 0.9rem;
     text-align: left;
   }
 
   .article th {
+    border-block-end: 1px solid var(--color-line-lit);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+  }
+
+  .article tbody tr:nth-child(even) td {
     background: var(--color-surface);
-    font-weight: 650;
+  }
+
+  .article tbody tr:last-child td {
+    border-block-end: none;
   }
 
   .article hr {
     border: 0;
     border-top: 1px solid var(--color-line);
     margin-block: 2.6em;
+  }
+
+  /* --- table of contents -------------------------------------------------
+     Below the sidebar breakpoint it's the inline block already in the
+     template. At `lg` it moves into the second grid column and sticks in the
+     margin, the way a rail sits beside a printed column rather than
+     interrupting it. */
+  .toc {
+    font-size: 0.9rem;
+  }
+
+  .toc-list {
+    position: relative;
+  }
+
+  .toc-list::before {
+    content: "";
+    position: absolute;
+    inset-block: 0.15em 0.4em;
+    inset-inline-start: 0;
+    width: 1px;
+    background: var(--color-line);
+  }
+
+  .toc-list a {
+    display: block;
+    padding-block: 0.35em;
+    padding-inline-start: 1rem;
+    color: var(--color-muted);
+    transition: color 150ms var(--ease-out);
+  }
+
+  .toc-list a:hover,
+  .toc-list a:focus-visible {
+    color: var(--color-accent);
+  }
+
+  @media (min-width: 1024px) {
+    .toc-inline {
+      display: none;
+    }
+
+    .toc-rail {
+      display: block;
+      position: sticky;
+      top: 5.5rem;
+    }
+  }
+
+  @media not all and (min-width: 1024px) {
+    .toc-rail {
+      display: none;
+    }
+  }
+
+  /* --- reading progress ---------------------------------------------------
+     A CSS-driven scroll timeline, not a scroll listener: `animation-timeline`
+     ties the bar's width to document scroll with no script and nothing to
+     hydrate. Browsers without it (the `@supports` guard) simply never show
+     the element, rather than shipping a bar frozen at 0%. */
+  .reading-progress {
+    display: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .reading-progress {
+      display: block;
+      position: fixed;
+      inset-inline: 0;
+      top: 0;
+      z-index: 60;
+      height: 2px;
+      transform-origin: 0 50%;
+      background: var(--color-accent);
+      animation: reading-progress linear forwards;
+      animation-timeline: scroll(root);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reading-progress {
+        display: none;
+      }
+    }
+  }
+
+  @keyframes reading-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
   }
 }

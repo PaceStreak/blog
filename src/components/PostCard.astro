@@ -11,20 +11,19 @@ const { post } = Astro.props;
 const minutes = readingTime(post.body ?? "");
 ---
 
-<li>
+<li class="border-b border-line last:border-b-0">
   {
     /* `relative` here plus `after:absolute after:inset-0` on the title link
-      makes the whole card a click target while keeping exactly one link in the
+      makes the whole row a click target while keeping exactly one link in the
       accessibility tree — the tag links below stay reachable because they are
-      raised above the overlay. */
+      raised above the overlay. A divided list, not a repeated bordered card:
+      the row is the unit of an index, not a product tile. */
   }
-  <article
-    class="group relative flex gap-4 rounded-xl border border-line bg-surface p-4 transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit hover:-translate-y-0.5 sm:gap-5 sm:p-5"
-  >
+  <article class="post-row group relative flex gap-4 py-5 sm:gap-6 sm:py-6">
     <DateBlock date={post.data.date} class="mt-0.5" />
 
     <div class="min-w-0 flex-1">
-      <h2 class="text-[1.2rem] font-semibold tracking-tight text-balance sm:text-[1.32rem]">
+      <h2 class="text-[1.14rem] font-semibold tracking-tight text-balance sm:text-[1.24rem]">
         <a
           href={`/posts/${post.id}`}
           class="transition-colors duration-150 after:absolute after:inset-0 group-hover:text-accent"
@@ -33,7 +32,7 @@ const minutes = readingTime(post.body ?? "");
         </a>
       </h2>
 
-      <p class="mt-1.5 line-clamp-2 text-[0.96rem] leading-relaxed text-muted">
+      <p class="mt-1.5 line-clamp-2 max-w-[52ch] text-[0.94rem] leading-relaxed text-muted">
         {post.data.description}
       </p>
 
