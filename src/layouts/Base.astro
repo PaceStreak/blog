@@ -51,7 +51,7 @@ const nav = [
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
-    <meta name="theme-color" content="#fbfbf8" />
+    <meta name="theme-color" content="#0a0a0b" />
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="PaceStreak" />
@@ -98,7 +98,7 @@ const nav = [
             nav.map((item) => (
               <a
                 href={item.href}
-                class="rounded-[3px] px-2.5 py-1.5 text-[0.88rem] text-muted transition-colors hover:bg-surface-2 hover:text-ink"
+                class="rounded-full px-2.5 py-1.5 text-[0.88rem] text-muted transition-colors hover:bg-surface-2 hover:text-ink"
               >
                 {item.label}
               </a>

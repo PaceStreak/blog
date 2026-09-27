@@ -18,10 +18,10 @@ const font = (file: string) =>
 const regular = font("Archivo-Regular.ttf");
 const bold = font("Archivo-BoldCondensed.ttf");
 
-const BG = "#fbfbf8";
-const INK = "#141414";
-const MUTED = "#45454a";
-const ACCENT = "#c9241c";
+const BG = "#0a0a0b";
+const INK = "#f4f4f5";
+const MUTED = "#a1a1aa";
+const ACCENT = "#d3ff3e";
 
 type Node = { type: string; props: Record<string, unknown> & { children?: unknown } };
 const h = (
@@ -61,7 +61,7 @@ export async function renderCard({ title, meta, tags }: CardInput): Promise<Buff
           "svg",
           { width: 44, height: 44 },
           [
-            h("rect", {}, undefined, { x: 6, y: 9, width: 52, height: 49, rx: 5, fill: "#ffffff", stroke: INK, "stroke-width": 3 }),
+            h("rect", {}, undefined, { x: 6, y: 9, width: 52, height: 49, rx: 5, fill: "#141417", stroke: INK, "stroke-width": 3 }),
             h("path", {}, undefined, { d: "M6 14a5 5 0 0 1 5-5h42a5 5 0 0 1 5 5v7H6z", fill: ACCENT, stroke: INK, "stroke-width": 3 }),
             h("path", {}, undefined, { d: "M21 5v9M43 5v9", stroke: INK, "stroke-width": 4, "stroke-linecap": "round" }),
             h("path", {}, undefined, { d: "M19.5 29.5c8 6 16 13.5 25 21.5M45 29c-9.5 7-17 14-25 21.5", fill: "none", stroke: ACCENT, "stroke-width": 6, "stroke-linecap": "round" }),
@@ -104,7 +104,7 @@ export async function renderCard({ title, meta, tags }: CardInput): Promise<Buff
               h(
                 "span",
                 {
-                  border: `2px solid #bebdb6`,
+                  border: `2px solid #34343d`,
                   borderRadius: 999,
                   padding: "4px 16px",
                   fontSize: 22,
