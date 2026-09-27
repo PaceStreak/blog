@@ -115,7 +115,10 @@ is a decision and one you haven't is a surprise:
 
 ## Verifying email
 
-Verification is a single-use link, not a numeric code. `issue_one_time_token`
-creates a hashed, purpose-scoped token (`EMAIL_VERIFY` or `PASSWORD_RESET`),
-and redeeming it burns it. The only numeric codes anywhere in the system are
-TOTP codes.
+**Updated 2026-09-27:** this section originally described verification as a
+single-use link, redeemed by `issue_one_time_token`/`consume_one_time_token`
+with no numeric code involved beyond TOTP. That's no longer how it works -
+see [the API is live, and deploys itself](/posts/the-api-is-live-and-deploys-itself)
+for why it changed to a 6-digit code instead. The mechanism underneath is the
+same purpose-scoped, hashed, single-use row; only what gets emailed and typed
+back changed.
