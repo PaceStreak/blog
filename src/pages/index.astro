@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import PostCard from "../components/PostCard.astro";
+import MarkX from "../components/MarkX.astro";
 
 // Drafts are excluded from the index, the feed and the sitemap — set
 // `draft: true` in a post's frontmatter to keep working on it in the open.
@@ -30,14 +31,17 @@ const jsonLd = {
   path="/"
   jsonLd={jsonLd}
 >
-  <section class="wrap py-14 sm:py-16">
-    <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Blog</h1>
-    <p class="mt-5 text-lg leading-relaxed text-muted text-pretty">
+  <section class="wrap pb-10 pt-16 sm:pb-12 sm:pt-20">
+    <p class="kicker">
+      <MarkX size={13} /> Building in the open
+    </p>
+    <h1 class="mt-4 text-[2.6rem] font-semibold tracking-tight text-balance sm:text-[3.4rem]">
+      Blog
+    </h1>
+    <p class="mt-5 max-w-[36rem] text-[1.05rem] leading-relaxed text-muted text-pretty">
       Notes from building{" "}
-      <a
-        class="text-accent underline-offset-4 hover:underline"
-        href="https://www.pacestreak.com">PaceStreak</a
-      >, a habit and streak tracker. What broke, what it cost, and what I would do
+      <a class="text-accent u-link" href="https://www.pacestreak.com">PaceStreak</a>, a
+      habit and streak tracker. What broke, what it cost, and what I would do
       differently — written as it happens rather than tidied up afterwards.
     </p>
   </section>
@@ -47,7 +51,7 @@ const jsonLd = {
       posts.length === 0 ? (
         <p class="text-muted">No posts yet. The first one is being written.</p>
       ) : (
-        <ul class="grid gap-5">
+        <ul class="grid gap-3">
           {posts.map((post) => (
             <PostCard post={post} />
           ))}

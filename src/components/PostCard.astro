@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { formatDate, readingTime } from "../lib/post";
+import { readingTime } from "../lib/post";
+import DateBlock from "./DateBlock.astro";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -18,42 +19,48 @@ const minutes = readingTime(post.body ?? "");
       raised above the overlay. */
   }
   <article
-    class="group relative rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-line-lit sm:p-6"
+    class="group relative flex gap-4 rounded-xl border border-line bg-surface p-4 transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit hover:-translate-y-0.5 sm:gap-5 sm:p-5"
   >
-    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.82rem] text-dim">
-      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-      <span aria-hidden="true">·</span>
-      <span>{minutes} min read</span>
+    <DateBlock date={post.data.date} class="mt-0.5" />
+
+    <div class="min-w-0 flex-1">
+      <h2 class="text-[1.2rem] font-semibold tracking-tight text-balance sm:text-[1.32rem]">
+        <a
+          href={`/posts/${post.id}`}
+          class="transition-colors duration-150 after:absolute after:inset-0 group-hover:text-accent"
+        >
+          {post.data.title}
+        </a>
+      </h2>
+
+      <p class="mt-1.5 line-clamp-2 text-[0.96rem] leading-relaxed text-muted">
+        {post.data.description}
+      </p>
+
+      <div class="relative z-10 mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <span class="text-[0.78rem] text-dim">{minutes} min read</span>
+        {
+          post.data.tags.length > 0 && (
+            <>
+              <span aria-hidden="true" class="text-line-lit">
+                /
+              </span>
+              <ul class="flex flex-wrap gap-1.5">
+                {post.data.tags.map((tag) => (
+                  <li>
+                    <a
+                      href={`/tags/${tag}`}
+                      class="inline-block rounded-full border border-line px-2.5 py-1 text-[0.76rem] text-dim transition-colors duration-150 hover:border-accent hover:text-accent"
+                    >
+                      {tag}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )
+        }
+      </div>
     </div>
-
-    <h2 class="mt-2 text-xl font-semibold tracking-tight">
-      <a
-        href={`/posts/${post.id}`}
-        class="transition-colors after:absolute after:inset-0 group-hover:text-accent"
-      >
-        {post.data.title}
-      </a>
-    </h2>
-
-    <p class="mt-2 text-[0.96rem] leading-relaxed text-muted">
-      {post.data.description}
-    </p>
-
-    {
-      post.data.tags.length > 0 && (
-        <ul class="relative z-10 mt-4 flex flex-wrap gap-2">
-          {post.data.tags.map((tag) => (
-            <li>
-              <a
-                href={`/tags/${tag}`}
-                class="inline-block rounded-full border border-line bg-surface-2 px-2.5 py-1 text-[0.78rem] text-dim transition-colors hover:border-accent hover:text-accent"
-              >
-                {tag}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
   </article>
 </li>

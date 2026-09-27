@@ -1,0 +1,36 @@
+---
+/**
+ * The two-stroke marker X — the product's signature "done" mark, drawn as two
+ * bowed Bézier paths rather than a font glyph (see the
+ * "drawing-a-marker-x-in-svg" post for why). Used here purely as a small
+ * decorative flourish, never to claim anything is "done": a size and an
+ * optional class are the only knobs.
+ */
+interface Props {
+  size?: number;
+  class?: string;
+}
+
+const { size = 16, class: className = "" } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 40 40"
+  width={size}
+  height={size}
+  class={`mark-x ${className}`}
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d="M8.5 9.5c6.5 5.4 15 13.2 23 21.8" />
+  <path d="M31.5 8.8C24 15 16.4 22.3 8.8 31" />
+</svg>
+
+<style>
+  .mark-x path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 4.5;
+    stroke-linecap: round;
+  }
+</style>

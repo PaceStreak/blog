@@ -2,6 +2,8 @@
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import { formatDate, readingTime } from "../../lib/post";
+import DateBlock from "../../components/DateBlock.astro";
+import MarkX from "../../components/MarkX.astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
@@ -69,60 +71,71 @@ const toc = headings.filter((h) => h.depth === 2);
   jsonLd={jsonLd}
 >
   <article class="wrap py-12 sm:py-16">
-    <a href="/" class="text-[0.88rem] text-dim transition-colors hover:text-ink"
+    <a
+      href="/"
+      class="text-[0.88rem] text-dim transition-colors duration-150 hover:text-ink"
       >&larr; All posts</a
     >
 
-    <header class="mt-6">
-      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.85rem] text-dim">
-        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time
+    <header class="mt-7 flex gap-5 sm:gap-6">
+      <DateBlock date={post.data.date} class="datecard--lg hidden sm:flex" />
+
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.85rem] text-dim">
+          <time class="sm:hidden" datetime={post.data.date.toISOString()}
+            >{formatDate(post.data.date)}</time
+          >
+          <span aria-hidden="true" class="sm:hidden">·</span>
+          <span>{minutes} min read</span>
+        </div>
+
+        <h1
+          class="mt-3 text-[2.1rem] font-semibold tracking-tight text-balance sm:text-[2.5rem]"
         >
-        <span aria-hidden="true">·</span>
-        <span>{minutes} min read</span>
+          {post.data.title}
+        </h1>
+
+        <p class="mt-4 text-lg leading-relaxed text-muted text-pretty">
+          {post.data.description}
+        </p>
+
+        {
+          post.data.tags.length > 0 && (
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {post.data.tags.map((tag) => (
+                <li>
+                  <a
+                    href={`/tags/${tag}`}
+                    class="inline-block rounded-full border border-line px-2.5 py-1 text-[0.78rem] text-dim transition-colors duration-150 hover:border-accent hover:text-accent"
+                  >
+                    {tag}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
       </div>
-
-      <h1 class="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-        {post.data.title}
-      </h1>
-
-      <p class="mt-4 text-lg text-muted text-pretty">{post.data.description}</p>
-
-      {
-        post.data.tags.length > 0 && (
-          <ul class="mt-5 flex flex-wrap gap-2">
-            {post.data.tags.map((tag) => (
-              <li>
-                <a
-                  href={`/tags/${tag}`}
-                  class="inline-block rounded-full border border-line bg-surface-2 px-2.5 py-1 text-[0.78rem] text-dim transition-colors hover:border-accent hover:text-accent"
-                >
-                  {tag}
-                </a>
-              </li>
-            ))}
-          </ul>
-        )
-      }
     </header>
 
     {
       toc.length > 2 && (
         <nav
-          class="mt-10 rounded-md border border-line bg-surface p-5"
+          class="mt-10 rounded-lg border border-line bg-surface p-5"
           aria-labelledby="toc-heading"
         >
           <h2
             id="toc-heading"
-            class="text-[0.78rem] font-semibold tracking-[0.14em] text-dim uppercase"
+            class="kicker !text-[0.72rem]"
           >
-            On this page
+            <MarkX size={12} /> On this page
           </h2>
-          <ol class="mt-3 space-y-1.5">
+          <ol class="mt-3.5 space-y-1.5">
             {toc.map((heading) => (
               <li>
                 <a
                   href={`#${heading.slug}`}
-                  class="text-[0.94rem] text-muted transition-colors hover:text-accent"
+                  class="u-link text-[0.94rem] text-muted transition-colors duration-150 hover:text-accent"
                 >
                   {heading.text}
                 </a>
@@ -146,12 +159,10 @@ const toc = headings.filter((h) => h.depth === 2);
           {older ? (
             <a
               href={`/posts/${older.id}`}
-              class="rounded-md border border-line bg-surface p-4 transition-colors hover:border-line-lit"
+              class="rounded-lg border border-line bg-surface p-4 transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit hover:-translate-y-0.5"
             >
-              <span class="text-[0.78rem] tracking-[0.14em] text-dim uppercase">
-                Older
-              </span>
-              <span class="mt-1.5 block font-medium">{older.data.title}</span>
+              <span class="kicker !text-[0.72rem]">&larr; Older</span>
+              <span class="mt-2 block font-medium text-pretty">{older.data.title}</span>
             </a>
           ) : (
             <span />
@@ -160,12 +171,10 @@ const toc = headings.filter((h) => h.depth === 2);
           {newer && (
             <a
               href={`/posts/${newer.id}`}
-              class="rounded-md border border-line bg-surface p-4 transition-colors hover:border-line-lit sm:text-right"
+              class="rounded-lg border border-line bg-surface p-4 text-right transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit hover:-translate-y-0.5"
             >
-              <span class="text-[0.78rem] tracking-[0.14em] text-dim uppercase">
-                Newer
-              </span>
-              <span class="mt-1.5 block font-medium">{newer.data.title}</span>
+              <span class="kicker !text-[0.72rem] justify-end">Newer &rarr;</span>
+              <span class="mt-2 block font-medium text-pretty">{newer.data.title}</span>
             </a>
           )}
         </nav>

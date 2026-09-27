@@ -47,6 +47,11 @@
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --container-wrap: 46rem;
+
+  /* Shared easing for anything that isn't a plain color/opacity fade — a
+     little overshoot on the way in, no bounce on the way out. Kept as one
+     token so every hover/press in the file agrees on how motion feels. */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 @layer base {
@@ -91,6 +96,97 @@
 }
 
 @layer components {
+  /* A small uppercase label that precedes a heading — "field notes", "on this
+     page" — set in the mono face so it reads as a caption, not a subheading
+     competing with the H1 for size. */
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+  }
+
+  .kicker .mark-x {
+    color: var(--color-accent);
+  }
+
+  /* The tear-off wall-calendar date block. Sized to sit beside a title at
+     list density; the post template scales it up with a utility class. */
+  .datecard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    flex-shrink: 0;
+    padding-block: 0.5rem 0.4rem;
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
+    background: var(--color-surface-2);
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--color-line-lit) 0 5px,
+      transparent 5px 10px
+    );
+    background-repeat: no-repeat;
+    background-position: bottom 1.35rem left 0;
+    background-size: 100% 1px;
+    transition:
+      border-color 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+
+  .datecard__month {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+  }
+
+  .datecard__day {
+    margin-block-start: 0.55rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--color-ink);
+  }
+
+  .datecard__year {
+    display: none;
+  }
+
+  /* Scaled up for the article header, where the date is the page's own
+     "today" rather than one entry among many. */
+  .datecard--lg {
+    width: 4.5rem;
+    padding-block: 0.75rem 0.6rem;
+  }
+
+  .datecard--lg .datecard__month {
+    font-size: 0.72rem;
+  }
+
+  .datecard--lg .datecard__day {
+    margin-block-start: 0.7rem;
+    font-size: 1.9rem;
+  }
+
+  .datecard--lg .datecard__year {
+    display: block;
+    margin-block-start: 0.15rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--color-dim);
+  }
+
   .wrap {
     width: 100%;
     max-width: var(--container-wrap);
@@ -113,6 +209,24 @@
 
   .skip:focus {
     left: 0;
+  }
+
+  /* An underline that reveals from a background gradient rather than the
+     default text-decoration — it can be timed and eased, and it clips at the
+     descenders instead of cutting through them. Used for prose and footer
+     links; nav and cards keep their pill/border treatment instead. */
+  .u-link {
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    padding-block-end: 0.05em;
+    transition: background-size 220ms var(--ease-out);
+  }
+
+  .u-link:hover,
+  .u-link:focus-visible {
+    background-size: 100% 1px;
   }
 
   /* Named so the header is treated as the same element across a navigation
@@ -170,11 +284,35 @@
     color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 3px;
-    text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    transition: text-decoration-color 160ms var(--ease-out);
   }
 
   .article a:hover {
     text-decoration-color: var(--color-accent);
+  }
+
+  .article h2,
+  .article h3 {
+    color: var(--color-ink);
+  }
+
+  /* A quiet rule instead of a full-width h2 border: the article is one
+     column, so weight alone should carry section breaks. This just gives
+     `##` a touch more presence than bold body text. */
+  .article h2 {
+    position: relative;
+    padding-inline-start: 1.1rem;
+  }
+
+  .article h2::before {
+    content: "";
+    position: absolute;
+    inset-block: 0.2em 0.35em;
+    inset-inline-start: 0;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--color-accent);
   }
 
   .article ul,

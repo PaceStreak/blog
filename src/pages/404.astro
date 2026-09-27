@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import MarkX from "../components/MarkX.astro";
 
 // Without this, Cloudflare Pages answers every unknown path with index.html and
 // a 200. That is not just a soft 404 for search engines — before this page
@@ -15,21 +16,19 @@ import Base from "../layouts/Base.astro";
   noindex
 >
   <section class="wrap py-24 text-center sm:py-32">
-    <p class="text-[0.78rem] font-semibold tracking-[0.14em] text-dim uppercase">404</p>
-    <h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+    <MarkX size={30} class="mx-auto text-line-lit" />
+    <h1 class="mt-6 text-[2.6rem] font-semibold tracking-tight sm:text-5xl">
       Nothing here.
     </h1>
-    <p class="mt-4 text-muted">
+    <p class="mx-auto mt-4 max-w-[28rem] text-muted text-pretty">
       That post or page doesn't exist. It may have been renamed, or the link may never
       have pointed anywhere.
     </p>
 
-    <p class="footer-links mt-8 text-[0.95rem]">
-      <a class="text-accent hover:underline" href="/">All posts</a>
-      <a class="text-accent hover:underline" href="/tags">Tags</a>
-      <a class="text-accent hover:underline" href="https://www.pacestreak.com"
-        >PaceStreak</a
-      >
+    <p class="footer-links mt-9 text-[0.95rem]">
+      <a class="text-accent u-link" href="/">All posts</a>
+      <a class="text-accent u-link" href="/tags">Tags</a>
+      <a class="text-accent u-link" href="https://www.pacestreak.com">PaceStreak</a>
     </p>
   </section>
 </Base>

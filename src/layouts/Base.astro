@@ -88,17 +88,17 @@ const nav = [
     <header
       class="site-header sticky top-0 z-50 border-b border-line/80 bg-bg/85 backdrop-blur-md"
     >
-      <nav class="wrap flex h-14 items-center justify-between gap-4" aria-label="Main">
+      <nav class="wrap flex h-16 items-center justify-between gap-4" aria-label="Main">
         <a href="/" class="flex items-baseline gap-2 font-semibold tracking-tight">
           <span>Pace<span class="text-accent">Streak</span></span>
           <span class="text-[0.78rem] font-normal text-dim">blog</span>
         </a>
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-0.5">
           {
             nav.map((item) => (
               <a
                 href={item.href}
-                class="rounded-full px-2.5 py-1.5 text-[0.88rem] text-muted transition-colors hover:bg-surface-2 hover:text-ink"
+                class="rounded-full px-3 py-1.5 text-[0.87rem] text-muted transition-colors duration-150 hover:bg-surface-2 hover:text-ink"
               >
                 {item.label}
               </a>
@@ -112,15 +112,15 @@ const nav = [
       <slot />
     </main>
 
-    <footer class="mt-20 border-t border-line py-9">
+    <footer class="mt-24 border-t border-line py-10">
       <div
-        class="wrap flex flex-col gap-2 text-[0.87rem] text-dim sm:flex-row sm:items-center sm:justify-between"
+        class="wrap flex flex-col gap-3 text-[0.85rem] text-dim sm:flex-row sm:items-center sm:justify-between"
       >
         <span>&copy; {year} PaceStreak</span>
         <p class="footer-links">
-          <a href="https://www.pacestreak.com">pacestreak.com</a>
-          <a href="https://status.pacestreak.com">Status</a>
-          <a href="/rss.xml">RSS</a>
+          <a class="u-link" href="https://www.pacestreak.com">pacestreak.com</a>
+          <a class="u-link" href="https://status.pacestreak.com">Status</a>
+          <a class="u-link" href="/rss.xml">RSS</a>
         </p>
       </div>
     </footer>

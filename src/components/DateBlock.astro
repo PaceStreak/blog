@@ -1,0 +1,23 @@
+---
+/**
+ * The tear-off wall-calendar date block, reused from the product's own week
+ * board: month abbreviation above a large day number, a dashed "tear" line
+ * standing in for the perforation. It replaces a plain `<time>` string
+ * wherever a post's date is the thing a reader scans for first.
+ */
+interface Props {
+  date: Date;
+  class?: string;
+}
+
+const { date, class: className = "" } = Astro.props;
+const month = date.toLocaleDateString("en-GB", { month: "short" });
+const day = date.getDate();
+const year = date.getFullYear();
+---
+
+<div class={`datecard ${className}`} aria-hidden="true">
+  <span class="datecard__month">{month}</span>
+  <span class="datecard__day">{day}</span>
+  <span class="datecard__year">{year}</span>
+</div>
