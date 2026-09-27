@@ -17,10 +17,10 @@ const font = (file: string) =>
 const regular = font("NotoSans-Regular.ttf");
 const bold = font("NotoSans-Bold.ttf");
 
-const BG = "#0a0a0b";
-const INK = "#f4f4f5";
-const MUTED = "#a1a1aa";
-const ACCENT = "#d3ff3e";
+const BG = "#f2f1ed";
+const INK = "#141414";
+const MUTED = "#45454a";
+const ACCENT = "#c9241c";
 
 type Node = { type: string; props: Record<string, unknown> & { children?: unknown } };
 const h = (
@@ -101,7 +101,7 @@ export async function renderCard({ title, meta, tags }: CardInput): Promise<Buff
               h(
                 "span",
                 {
-                  border: `2px solid #34343d`,
+                  border: `2px solid #bebdb6`,
                   borderRadius: 999,
                   padding: "4px 16px",
                   fontSize: 22,

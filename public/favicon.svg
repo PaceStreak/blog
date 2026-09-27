@@ -1,18 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="PaceStreak">
-  <title>PaceStreak</title>
-  <defs>
-    <linearGradient id="ps-g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#e2ff7a"/>
-      <stop offset="0.55" stop-color="#d3ff3e"/>
-      <stop offset="1" stop-color="#b4ed00"/>
-    </linearGradient>
-    <!-- The bolt is knocked OUT of the badge rather than drawn on top. The
-         silhouette then survives small sizes, where a layered or stroked mark
-         turns to mush. Verified legible down to 16px. -->
-    <mask id="ps-m">
-      <rect width="64" height="64" rx="15" fill="#fff"/>
-      <path d="M39 5 8 39h19L25 59 56 25H37L39 5Z" fill="#000"/>
-    </mask>
-  </defs>
-  <rect width="64" height="64" rx="15" fill="url(#ps-g)" mask="url(#ps-m)"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="6" y="9" width="52" height="49" rx="5" fill="#fff" stroke="#141414" stroke-width="3"/><path d="M6 14a5 5 0 0 1 5-5h42a5 5 0 0 1 5 5v7H6z" fill="#d6281f" stroke="#141414" stroke-width="3" stroke-linejoin="round"/><path d="M21 5v9M43 5v9" stroke="#141414" stroke-width="4" stroke-linecap="round"/><path d="M19.5 29.5c8 6 16 13.5 25 21.5M45 29c-9.5 7-17 14-25 21.5" fill="none" stroke="#d6281f" stroke-width="6" stroke-linecap="round"/></svg>

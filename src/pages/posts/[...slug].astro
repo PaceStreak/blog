@@ -108,7 +108,7 @@ const toc = headings.filter((h) => h.depth === 2);
     {
       toc.length > 2 && (
         <nav
-          class="mt-10 rounded-2xl border border-line bg-surface p-5"
+          class="mt-10 rounded-md border border-line bg-surface p-5"
           aria-labelledby="toc-heading"
         >
           <h2
@@ -146,7 +146,7 @@ const toc = headings.filter((h) => h.depth === 2);
           {older ? (
             <a
               href={`/posts/${older.id}`}
-              class="rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-line-lit"
+              class="rounded-md border border-line bg-surface p-4 transition-colors hover:border-line-lit"
             >
               <span class="text-[0.78rem] tracking-[0.14em] text-dim uppercase">
                 Older
@@ -160,7 +160,7 @@ const toc = headings.filter((h) => h.depth === 2);
           {newer && (
             <a
               href={`/posts/${newer.id}`}
-              class="rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-line-lit sm:text-right"
+              class="rounded-md border border-line bg-surface p-4 transition-colors hover:border-line-lit sm:text-right"
             >
               <span class="text-[0.78rem] tracking-[0.14em] text-dim uppercase">
                 Newer

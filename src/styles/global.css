@@ -6,6 +6,7 @@
    while working fine in local preview. */
 
 @import "tailwindcss";
+@import "@fontsource-variable/archivo/wdth.css";
 
 /* Cross-document view transitions, in CSS, with no JavaScript.
    The browser holds the old page on screen while it fetches the new document
@@ -25,23 +26,23 @@
 }
 
 @theme {
-  --color-bg: #0a0a0b;
-  --color-bg-alt: #0e0e10;
-  --color-surface: #141417;
-  --color-surface-2: #1a1a1e;
-  --color-line: #26262c;
-  --color-line-lit: #34343d;
+  --color-bg: #fbfbf8;
+  --color-bg-alt: #eae9e4;
+  --color-surface: #fbfbf8;
+  --color-surface-2: #f5f4f0;
+  --color-line: #dddcd6;
+  --color-line-lit: #bebdb6;
 
-  --color-ink: #f4f4f5;
-  --color-muted: #a1a1aa;
+  --color-ink: #141414;
+  --color-muted: #45454a;
   /* 5.87:1 on --color-bg. The old #71717a measured 4.09:1 and failed AA. */
-  --color-dim: #8b8b95;
+  --color-dim: #5c5c62;
 
-  --color-accent: #d3ff3e;
-  --color-accent-ink: #14170a;
+  --color-accent: #c9241c;
+  --color-accent-ink: #ffffff;
 
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Archivo Variable", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
