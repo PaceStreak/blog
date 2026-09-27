@@ -92,9 +92,10 @@ little entropy compared to what it replaced.
 
 ## What's still open
 
-Same list as before, minus the item this post just closed. `app.pacestreak.com`
-still has no DNS record, on purpose, until there's a real deployment to attach
-it to. Backups are configured but the restore path wants another real test.
-And the credentials that got typed into a chat window while setting any of
-this up are being treated as already compromised and rotated, on the
-assumption that "probably fine" is not a security posture.
+Same list as before, minus the item this post just closed. **Update:**
+`app.pacestreak.com` has since been given its own custom domain and is live,
+still `noindex` - it's the product, not something search should surface before
+there's a public launch to point at. Backups are configured but the restore
+path wants another real test. And the credentials that got typed into a chat
+window while setting any of this up are being treated as already compromised
+and rotated, on the assumption that "probably fine" is not a security posture.
