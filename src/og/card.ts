@@ -2,7 +2,8 @@
 //
 // Satori lays the card out and resvg rasterises it. Both run only during
 // `astro build`, so nothing here ships to the browser and the CSP is
-// untouched. The font is vendored (Noto Sans, OFL - see fonts/OFL.txt)
+// untouched. The font is vendored (Archivo static cuts made from the site's
+// variable font, OFL; Noto Sans is kept for reference - see fonts/OFL.txt)
 // because the build machine's fonts are unknown and resvg draws nothing for
 // text without one.
 import { readFileSync } from "node:fs";
@@ -14,10 +15,10 @@ import satori from "satori";
 // module into dist/.prerender/, where a relative URL points at nothing.
 const font = (file: string) =>
   readFileSync(resolve(process.cwd(), "src/og/fonts", file));
-const regular = font("NotoSans-Regular.ttf");
-const bold = font("NotoSans-Bold.ttf");
+const regular = font("Archivo-Regular.ttf");
+const bold = font("Archivo-BoldCondensed.ttf");
 
-const BG = "#f2f1ed";
+const BG = "#fbfbf8";
 const INK = "#141414";
 const MUTED = "#45454a";
 const ACCENT = "#c9241c";
@@ -52,17 +53,19 @@ export async function renderCard({ title, meta, tags }: CardInput): Promise<Buff
       justifyContent: "space-between",
       padding: "72px 80px",
       background: BG,
-      fontFamily: "Noto Sans",
+      fontFamily: "Archivo",
     },
     [
       h("div", { display: "flex", alignItems: "center", gap: 18 }, [
         h(
           "svg",
           { width: 44, height: 44 },
-          h("path", {}, undefined, {
-            d: "M39 5 8 39h19L25 59 56 25H37L39 5Z",
-            fill: ACCENT,
-          }),
+          [
+            h("rect", {}, undefined, { x: 6, y: 9, width: 52, height: 49, rx: 5, fill: "#ffffff", stroke: INK, "stroke-width": 3 }),
+            h("path", {}, undefined, { d: "M6 14a5 5 0 0 1 5-5h42a5 5 0 0 1 5 5v7H6z", fill: ACCENT, stroke: INK, "stroke-width": 3 }),
+            h("path", {}, undefined, { d: "M21 5v9M43 5v9", stroke: INK, "stroke-width": 4, "stroke-linecap": "round" }),
+            h("path", {}, undefined, { d: "M19.5 29.5c8 6 16 13.5 25 21.5M45 29c-9.5 7-17 14-25 21.5", fill: "none", stroke: ACCENT, "stroke-width": 6, "stroke-linecap": "round" }),
+          ],
           { viewBox: "0 0 64 64" },
         ),
         h("div", { display: "flex", fontSize: 32, fontWeight: 700, color: INK }, [
@@ -118,8 +121,8 @@ export async function renderCard({ title, meta, tags }: CardInput): Promise<Buff
     width: 1200,
     height: 630,
     fonts: [
-      { name: "Noto Sans", data: regular, weight: 400, style: "normal" },
-      { name: "Noto Sans", data: bold, weight: 700, style: "normal" },
+      { name: "Archivo", data: regular, weight: 400, style: "normal" },
+      { name: "Archivo", data: bold, weight: 700, style: "normal" },
     ],
   });
   return new Resvg(svg, { fitTo: { mode: "width", value: 1200 } }).render().asPng();
