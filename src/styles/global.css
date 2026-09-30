@@ -207,6 +207,40 @@
     padding-inline: 24px;
   }
 
+  /* Wider still: the image-led card grids (index, category, tags) need room
+     for three columns without each card's thumbnail shrinking past the point
+     of being legible. */
+  .wrap-wide {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  .category-pill {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    transition:
+      background-color 150ms,
+      color 150ms;
+  }
+
+  .category-pill:hover {
+    background-color: var(--color-surface-2);
+    color: var(--color-ink);
+  }
+
+  .category-pill[aria-current="page"] {
+    background-color: var(--color-surface-2);
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
   /* Article body and the TOC rail beside it. One column until there is room
      for both without squeezing the measure below 65ch. */
   .post-layout {

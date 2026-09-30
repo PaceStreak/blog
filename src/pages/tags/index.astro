@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
+import CategoryNav from "../../components/CategoryNav.astro";
 
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 
@@ -23,6 +24,8 @@ const tags = [...counts.entries()].sort(
   description="Every topic written about on the PaceStreak blog."
   path="/tags"
 >
+  <CategoryNav />
+
   <section class="wrap py-14 sm:py-16">
     <a
       href="/"

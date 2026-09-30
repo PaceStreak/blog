@@ -69,14 +69,20 @@ PRE_BLOCK = re.compile(r"<pre\b.*?</pre>", re.S)
 def check(path: pathlib.Path) -> list[str]:
     html = path.read_text()
     problems = []
-    for m in INLINE_BEFORE.finditer(html):
+    # Shiki wraps every highlighted token — including a diff block's leading
+    # `-`/`+` marker — in its own <span>, directly against the next token with
+    # no real whitespace between them by design. That is correct rendering,
+    # not the prose bug this check exists to catch, so <pre> is excluded here
+    # the same way it already is from the inline-style-attribute check below.
+    prose = PRE_BLOCK.sub("", html)
+    for m in INLINE_BEFORE.finditer(prose):
         frag = m.group(0)
         if re.sub(r"\s+[^>]*>", ">", frag) in ALLOWED or frag in ALLOWED:
             continue
         if any(frag.startswith(a[0]) and a in frag for a in ALLOWED):
             continue
         problems.append(f"{path.name}: text runs into an inline tag: …{frag}")
-    for m in INLINE_AFTER.finditer(html):
+    for m in INLINE_AFTER.finditer(prose):
         problems.append(f"{path.name}: inline tag runs into text: {m.group(0)}…")
 
     for scope in SEPARATOR_SCOPE.finditer(html):

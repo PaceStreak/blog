@@ -1,0 +1,64 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import CategoryNav from "../../components/CategoryNav.astro";
+import PostGridCard from "../../components/PostGridCard.astro";
+import { categories, categoryFor } from "../../lib/categories";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+
+  return categories.map((category) => ({
+    params: { slug: category.slug },
+    props: {
+      category,
+      posts: posts.filter((p) => categoryFor(p.data.tags).slug === category.slug),
+    },
+  }));
+}
+
+interface Props {
+  category: (typeof categories)[number];
+  posts: CollectionEntry<"blog">[];
+}
+
+const { category, posts } = Astro.props;
+---
+
+<Base
+  title={`${category.label} — PaceStreak Blog`}
+  description={category.description}
+  path={`/category/${category.slug}`}
+>
+  <CategoryNav current={category.slug} />
+
+  <section class="wrap-wide py-14 sm:py-16">
+    <h1 class="text-[2.4rem] font-semibold tracking-tight sm:text-[2.8rem]">
+      {category.label}
+    </h1>
+    <p class="mt-4 max-w-[42rem] text-[1.02rem] leading-relaxed text-muted">
+      {category.description}
+    </p>
+    <p class="mt-2 text-[0.85rem] text-dim">
+      {posts.length} post{posts.length === 1 ? "" : "s"}.
+    </p>
+  </section>
+
+  <div class="wrap-wide pb-16">
+    {
+      posts.length === 0 ? (
+        <p class="text-muted">Nothing here yet.</p>
+      ) : (
+        <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post) => (
+            <li>
+              <PostGridCard post={post} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</Base>

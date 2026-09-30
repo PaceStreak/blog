@@ -2,11 +2,13 @@
 /**
  * The latest post, given editorial weight instead of sitting in the same-size
  * row as the rest of the index. One large treatment, never repeated — this is
- * a hero unit, not a card template stamped across the page.
+ * a hero unit, not a card template stamped across the page. Leads with the
+ * post's own OG card as a full-width image, the same honest-thumbnail rule
+ * as PostGridCard: generated from this post's real content, not stock art.
  */
 import type { CollectionEntry } from "astro:content";
 import { readingTime } from "../lib/post";
-import DateBlock from "./DateBlock.astro";
+import { categoryFor } from "../lib/categories";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -14,17 +16,37 @@ interface Props {
 
 const { post } = Astro.props;
 const minutes = readingTime(post.body ?? "");
+const category = categoryFor(post.data.tags);
 ---
 
 <article
-  class="featured-post group relative flex flex-col gap-6 rounded-2xl border border-line bg-surface p-6 transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit sm:flex-row sm:gap-8 sm:p-9"
+  class="featured-post group relative overflow-hidden rounded-2xl border border-line bg-surface transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit lg:flex lg:items-stretch"
 >
-  <DateBlock date={post.data.date} class="datecard--lg hidden shrink-0 sm:flex" />
+  <div class="aspect-1200/630 w-full overflow-hidden border-b border-line bg-bg-alt lg:aspect-auto lg:w-[46%] lg:border-b-0 lg:border-r">
+    <img
+      src={`/og/${post.id}.png`}
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      width="1200"
+      height="630"
+      class="h-full w-full object-cover transition-transform duration-300 [transition-timing-function:var(--ease-out)] group-hover:scale-[1.015]"
+    />
+  </div>
 
-  <div class="min-w-0 flex-1">
-    <p class="text-[0.78rem] font-medium tracking-tight text-dim">Latest</p>
+  <div class="min-w-0 flex-1 p-6 sm:p-9">
+    <div class="flex items-center gap-2.5">
+      <p class="text-[0.78rem] font-medium tracking-tight text-dim">Latest</p>
+      <span aria-hidden="true" class="text-line-lit">/</span>
+      <a
+        href={`/category/${category.slug}`}
+        class="relative z-10 text-[0.78rem] font-medium tracking-tight text-accent transition-colors duration-150 hover:text-ink"
+      >
+        {category.label}
+      </a>
+    </div>
 
-    <h2 class="mt-2 text-[1.7rem] font-semibold tracking-tight text-balance sm:text-[2.1rem]">
+    <h2 class="mt-3 text-[1.7rem] font-semibold tracking-tight text-balance sm:text-[2.1rem]">
       <a
         href={`/posts/${post.id}`}
         class="transition-colors duration-150 after:absolute after:inset-0 group-hover:text-accent"
@@ -38,12 +60,11 @@ const minutes = readingTime(post.body ?? "");
     </p>
 
     <div class="relative z-10 mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
-      <time class="text-[0.82rem] text-dim sm:hidden" datetime={post.data.date.toISOString()}>
+      <time class="text-[0.82rem] text-dim" datetime={post.data.date.toISOString()}>
         {post.data.date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
       </time>
-      <span class="hidden text-[0.82rem] text-dim sm:inline">{minutes} min read</span>
-      <span class="text-[0.82rem] text-dim sm:hidden">·</span>
-      <span class="text-[0.82rem] text-dim sm:hidden">{minutes} min read</span>
+      <span class="text-[0.82rem] text-dim">·</span>
+      <span class="text-[0.82rem] text-dim">{minutes} min read</span>
       {
         post.data.tags.length > 0 && (
           <>
@@ -51,7 +72,7 @@ const minutes = readingTime(post.body ?? "");
               /
             </span>
             <ul class="flex flex-wrap gap-1.5">
-              {post.data.tags.map((tag) => (
+              {post.data.tags.slice(0, 4).map((tag) => (
                 <li>
                   <a
                     href={`/tags/${tag}`}

@@ -1,8 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
-import PostCard from "../components/PostCard.astro";
+import PostGridCard from "../components/PostGridCard.astro";
 import FeaturedPost from "../components/FeaturedPost.astro";
+import CategoryNav from "../components/CategoryNav.astro";
 import MarkX from "../components/MarkX.astro";
 
 // Drafts are excluded from the index, the feed and the sitemap — set
@@ -32,7 +33,7 @@ const jsonLd = {
   path="/"
   jsonLd={jsonLd}
 >
-  <section class="wrap pb-10 pt-16 sm:pb-12 sm:pt-20">
+  <section class="wrap-wide pb-8 pt-16 sm:pb-10 sm:pt-20">
     <p class="kicker">
       <MarkX size={13} /> Building in the open
     </p>
@@ -47,7 +48,9 @@ const jsonLd = {
     </p>
   </section>
 
-  <div class="wrap pb-8">
+  <CategoryNav />
+
+  <div class="wrap-wide py-10 sm:py-12">
     {
       posts.length === 0 ? (
         <p class="text-muted">No posts yet. The first one is being written.</p>
@@ -57,9 +60,11 @@ const jsonLd = {
 
           {
             posts.length > 1 && (
-              <ul class="mt-2">
+              <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {posts.slice(1).map((post) => (
-                  <PostCard post={post} />
+                  <li>
+                    <PostGridCard post={post} />
+                  </li>
                 ))}
               </ul>
             )

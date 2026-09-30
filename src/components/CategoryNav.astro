@@ -1,0 +1,45 @@
+---
+/**
+ * The horizontal topic strip under the header — every category, plus "All",
+ * as a row of links rather than a dropdown, because there are only six of
+ * them and a reader should be able to see the whole shape of what's covered
+ * at a glance. `current` highlights the active one; omitted on pages (like a
+ * single post) where nothing in this row is "current".
+ */
+import { categories } from "../lib/categories";
+
+interface Props {
+  current?: string;
+}
+
+const { current } = Astro.props;
+---
+
+<nav class="category-nav border-b border-line" aria-label="Topics">
+  <div class="wrap-wide">
+    <ul class="flex gap-1 overflow-x-auto py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <li>
+        <a
+          href="/"
+          class="category-pill"
+          aria-current={current === undefined ? "page" : undefined}
+        >
+          All
+        </a>
+      </li>
+      {
+        categories.map((c) => (
+          <li>
+            <a
+              href={`/category/${c.slug}`}
+              class="category-pill"
+              aria-current={current === c.slug ? "page" : undefined}
+            >
+              {c.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>

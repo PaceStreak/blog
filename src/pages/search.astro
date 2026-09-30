@@ -1,0 +1,113 @@
+---
+import Base from "../layouts/Base.astro";
+import MarkX from "../components/MarkX.astro";
+---
+
+<Base
+  title="Search — PaceStreak Blog"
+  description="Search every post on the PaceStreak blog by title, topic or tag."
+  path="/search"
+>
+  <section class="wrap py-14 sm:py-16">
+    <p class="kicker">
+      <MarkX size={13} /> Search
+    </p>
+    <h1 class="mt-4 text-[2.4rem] font-semibold tracking-tight sm:text-[2.8rem]">
+      Search the blog
+    </h1>
+
+    <div class="relative mt-8 max-w-[36rem]">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Search by title, topic or tag…"
+        autocomplete="off"
+        class="w-full rounded-lg border border-line bg-surface px-4 py-3 text-[0.98rem] text-ink placeholder:text-dim focus-visible:border-accent focus-visible:outline-none"
+      />
+    </div>
+
+    <p id="search-status" class="mt-4 text-[0.88rem] text-dim" aria-live="polite"></p>
+  </section>
+
+  <div class="wrap pb-16">
+    <ul id="search-results" class="grid gap-1"></ul>
+  </div>
+</Base>
+
+<script>
+  interface Entry {
+    slug: string;
+    title: string;
+    description: string;
+    tags: string[];
+    category: string;
+    date: string;
+  }
+
+  const input = document.getElementById("search-input") as HTMLInputElement;
+  const status = document.getElementById("search-status") as HTMLParagraphElement;
+  const results = document.getElementById("search-results") as HTMLUListElement;
+
+  let entries: Entry[] = [];
+
+  function render(list: Entry[], query: string) {
+    results.innerHTML = "";
+
+    if (query.trim() === "") {
+      status.textContent = `${entries.length} posts indexed. Start typing to search.`;
+      return;
+    }
+
+    status.textContent = `${list.length} result${list.length === 1 ? "" : "s"} for "${query}"`;
+
+    for (const entry of list) {
+      const li = document.createElement("li");
+      li.className = "border-b border-line last:border-b-0";
+
+      const dateStr = new Date(entry.date).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+
+      li.innerHTML = `
+        <a href="/posts/${entry.slug}" class="block py-5 transition-colors duration-150 hover:text-accent sm:py-6">
+          <span class="text-[0.78rem] text-dim">${entry.category} · ${dateStr}</span>
+          <h2 class="mt-1 text-[1.1rem] font-semibold tracking-tight">${entry.title}</h2>
+          <p class="mt-1 line-clamp-2 max-w-[52ch] text-[0.92rem] leading-relaxed text-muted">${entry.description}</p>
+        </a>
+      `;
+      results.appendChild(li);
+    }
+  }
+
+  function search(query: string) {
+    const q = query.trim().toLowerCase();
+    if (q === "") return render([], "");
+
+    const terms = q.split(/\s+/);
+    const matches = entries.filter((entry) => {
+      const haystack = `${entry.title} ${entry.description} ${entry.tags.join(" ")} ${entry.category}`.toLowerCase();
+      return terms.every((term) => haystack.includes(term));
+    });
+
+    render(matches, query);
+  }
+
+  async function init() {
+    status.textContent = "Loading…";
+    const res = await fetch("/search-index.json");
+    entries = await res.json();
+    render([], "");
+
+    const params = new URLSearchParams(location.search);
+    const initial = params.get("q") ?? "";
+    if (initial) {
+      input.value = initial;
+      search(initial);
+    }
+  }
+
+  input?.addEventListener("input", () => search(input.value));
+  init();
+</script>

@@ -1,7 +1,8 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import Base from "../../layouts/Base.astro";
-import PostCard from "../../components/PostCard.astro";
+import PostGridCard from "../../components/PostGridCard.astro";
+import CategoryNav from "../../components/CategoryNav.astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
@@ -34,7 +35,9 @@ const { tag, posts } = Astro.props;
   description={`Posts tagged ${tag} on the PaceStreak blog.`}
   path={`/tags/${tag}`}
 >
-  <section class="wrap py-14 sm:py-16">
+  <CategoryNav />
+
+  <section class="wrap-wide py-14 sm:py-16">
     <a
       href="/tags"
       class="text-[0.88rem] text-dim transition-colors duration-150 hover:text-ink"
@@ -50,9 +53,9 @@ const { tag, posts } = Astro.props;
     </p>
   </section>
 
-  <div class="wrap pb-8">
-    <ul class="grid gap-3">
-      {posts.map((post) => <PostCard post={post} />)}
+  <div class="wrap-wide pb-16">
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => <li><PostGridCard post={post} /></li>)}
     </ul>
   </div>
 </Base>

@@ -2,34 +2,55 @@
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import { formatDate, readingTime } from "../../lib/post";
+import { categoryFor } from "../../lib/categories";
 import DateBlock from "../../components/DateBlock.astro";
 import MarkX from "../../components/MarkX.astro";
+import PostGridCard from "../../components/PostGridCard.astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
   );
 
-  // Previous/next are computed here, where the sorted list already exists.
-  // Doing it inside the page would mean re-fetching and re-sorting the whole
-  // collection once per post.
-  return posts.map((post, index) => ({
-    params: { slug: post.id },
-    props: {
-      post,
-      newer: posts[index - 1] ?? null,
-      older: posts[index + 1] ?? null,
-    },
-  }));
+  // Previous/next and related posts are computed here, where the sorted list
+  // already exists. Doing it inside the page would mean re-fetching and
+  // re-sorting the whole collection once per post.
+  return posts.map((post, index) => {
+    // Related: most shared tags first, ties broken by recency. A post with
+    // zero tag overlap is never "related" just because it's nearby in time —
+    // that's what newer/older already cover.
+    const related = posts
+      .filter((p) => p.id !== post.id)
+      .map((p) => ({
+        post: p,
+        shared: p.data.tags.filter((t) => post.data.tags.includes(t)).length,
+      }))
+      .filter((r) => r.shared > 0)
+      .sort((a, b) => b.shared - a.shared || b.post.data.date.valueOf() - a.post.data.date.valueOf())
+      .slice(0, 3)
+      .map((r) => r.post);
+
+    return {
+      params: { slug: post.id },
+      props: {
+        post,
+        newer: posts[index - 1] ?? null,
+        older: posts[index + 1] ?? null,
+        related,
+      },
+    };
+  });
 }
 
 interface Props {
   post: CollectionEntry<"blog">;
   newer: CollectionEntry<"blog"> | null;
   older: CollectionEntry<"blog"> | null;
+  related: CollectionEntry<"blog">[];
 }
 
-const { post, newer, older } = Astro.props;
+const { post, newer, older, related } = Astro.props;
+const category = categoryFor(post.data.tags);
 const { Content, headings } = await render(post);
 const minutes = readingTime(post.body ?? "");
 const url = new URL(`/posts/${post.id}`, Astro.site).href;
@@ -83,7 +104,14 @@ const toc = headings.filter((h) => h.depth === 2);
       <DateBlock date={post.data.date} class="datecard--lg hidden sm:flex" />
 
       <div class="min-w-0 flex-1">
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.85rem] text-dim">
+        <a
+          href={`/category/${category.slug}`}
+          class="relative z-10 text-[0.82rem] font-medium tracking-tight text-accent transition-colors duration-150 hover:text-ink"
+        >
+          {category.label}
+        </a>
+
+        <div class="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.85rem] text-dim">
           <time class="sm:hidden" datetime={post.data.date.toISOString()}
             >{formatDate(post.data.date)}</time
           >
@@ -146,6 +174,38 @@ const toc = headings.filter((h) => h.depth === 2);
         <div class="article">
           <Content />
         </div>
+
+        <div class="mt-12 flex items-center gap-3 border-t border-line pt-8">
+          <div
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-[0.85rem] font-semibold text-accent"
+            aria-hidden="true"
+          >
+            AW
+          </div>
+          <div class="text-[0.88rem] leading-tight">
+            <p class="font-medium text-ink">AlzyWelzy</p>
+            <p class="text-dim">
+              Building PaceStreak. <a class="u-link" href="https://github.com/PaceStreak">GitHub</a>
+            </p>
+          </div>
+        </div>
+
+        {
+          related.length > 0 && (
+            <div class="mt-12 border-t border-line pt-8">
+              <h2 class="kicker !text-[0.72rem]">
+                <MarkX size={12} /> Related
+              </h2>
+              <ul class="mt-5 grid gap-5 sm:grid-cols-3">
+                {related.map((r) => (
+                  <li>
+                    <PostGridCard post={r} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
 
         {
           (newer || older) && (
