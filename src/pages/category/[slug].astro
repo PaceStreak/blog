@@ -3,7 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import CategoryNav from "../../components/CategoryNav.astro";
 import PostGridCard from "../../components/PostGridCard.astro";
-import { categories, categoryFor } from "../../lib/categories";
+import { categories, categoryFor, topTagsForCategory } from "../../lib/categories";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
@@ -44,6 +44,27 @@ const { category, posts } = Astro.props;
     <p class="mt-2 text-[0.85rem] text-dim">
       {posts.length} post{posts.length === 1 ? "" : "s"}.
     </p>
+
+    {
+      /* Categories and tags are two views of the same posts, not two
+         competing systems — this is the connective tissue: every tag that
+         actually shows up in this category, so a reader can narrow further
+         without guessing which tag lives where. */
+      posts.length > 0 && (
+        <ul class="mt-5 flex flex-wrap gap-2">
+          {topTagsForCategory(posts.map((p) => p.data.tags)).map(({ tag, count }) => (
+            <li>
+              <a
+                href={`/tags/${tag}`}
+                class="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-[0.82rem] text-muted transition-colors duration-150 hover:border-accent hover:text-accent"
+              >
+                {tag} <span class="text-dim">{count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </section>
 
   <div class="wrap-wide pb-16">
@@ -51,7 +72,7 @@ const { category, posts } = Astro.props;
       posts.length === 0 ? (
         <p class="text-muted">Nothing here yet.</p>
       ) : (
-        <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul class="grid-cards">
           {posts.map((post) => (
             <li>
               <PostGridCard post={post} />

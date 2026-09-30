@@ -20,18 +20,35 @@ const category = categoryFor(post.data.tags);
 ---
 
 <article
-  class="featured-post group relative overflow-hidden rounded-2xl border border-line bg-surface transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit lg:flex lg:items-stretch"
+  class="featured-post group relative overflow-hidden rounded-2xl border border-line bg-surface transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-accent/60 lg:flex lg:items-stretch"
 >
-  <div class="aspect-1200/630 w-full overflow-hidden border-b border-line bg-bg-alt lg:aspect-auto lg:w-[46%] lg:border-b-0 lg:border-r">
+  <div class="relative aspect-1200/630 w-full overflow-hidden border-b border-line bg-bg-alt lg:aspect-auto lg:w-[46%] lg:border-b-0 lg:border-r">
     <img
       src={`/og/${post.id}.png`}
+      {/* Empty alt is deliberate, not an oversight: this image is a generated title card whose text duplicates the heading right below it - a screen reader announcing it would just repeat the post title a second time. */}
       alt=""
       loading="eager"
       fetchpriority="high"
       width="1200"
       height="630"
-      class="h-full w-full object-cover transition-transform duration-300 [transition-timing-function:var(--ease-out)] group-hover:scale-[1.015]"
+      class="h-full w-full object-cover transition-transform duration-300 [transition-timing-function:var(--ease-out)] group-hover:scale-[1.04]"
     />
+    {
+      /* A visible read-cue on the image itself, not just a near-imperceptible
+         zoom — fades in with the same hover as the rest of the card, so the
+         image half signals "clickable" as clearly as the text half does. */
+    }
+    <div
+      class="pointer-events-none absolute inset-0 flex items-end bg-linear-to-t from-bg/70 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+      aria-hidden="true"
+    >
+      <span class="m-5 inline-flex items-center gap-1.5 text-[0.82rem] font-medium text-ink">
+        Read the post
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="transition-transform duration-200 group-hover:translate-x-0.5">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+    </div>
   </div>
 
   <div class="min-w-0 flex-1 p-6 sm:p-9">
@@ -40,8 +57,13 @@ const category = categoryFor(post.data.tags);
       <span aria-hidden="true" class="text-line-lit">/</span>
       <a
         href={`/category/${category.slug}`}
-        class="relative z-10 text-[0.78rem] font-medium tracking-tight text-accent transition-colors duration-150 hover:text-ink"
+        class="relative z-10 inline-flex items-center gap-1.5 text-[0.78rem] font-medium tracking-tight text-accent transition-colors duration-150 hover:text-ink"
       >
+        <span
+          class="h-1.5 w-1.5 shrink-0 rounded-full"
+          style={`background-color: ${category.color}`}
+          aria-hidden="true"
+        />{" "}
         {category.label}
       </a>
     </div>

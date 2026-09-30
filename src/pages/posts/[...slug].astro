@@ -196,7 +196,7 @@ const toc = headings.filter((h) => h.depth === 2);
               <h2 class="kicker !text-[0.72rem]">
                 <MarkX size={12} /> Related
               </h2>
-              <ul class="mt-5 grid gap-5 sm:grid-cols-3">
+              <ul class="mt-5 grid-cards">
                 {related.map((r) => (
                   <li>
                     <PostGridCard post={r} />

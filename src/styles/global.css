@@ -217,6 +217,17 @@
     padding-inline: 24px;
   }
 
+  /* A grid that never leaves one card floating alone in a fixed 3-column
+     row — auto-fill computes exactly as many columns as fit, and a single
+     card takes one column's width instead of stretching to fill the row or
+     leaving two-thirds of it empty. Used everywhere card counts vary:
+     category pages, tag pages, related posts. */
+  .grid-cards {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  }
+
   .category-pill {
     display: inline-flex;
     align-items: center;

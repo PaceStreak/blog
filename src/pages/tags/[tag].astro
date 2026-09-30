@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import PostGridCard from "../../components/PostGridCard.astro";
 import CategoryNav from "../../components/CategoryNav.astro";
+import { categoriesForPosts } from "../../lib/categories";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const { tag, posts } = Astro.props;
+const spannedCategories = categoriesForPosts(posts.map((p) => p.data.tags));
 ---
 
 <Base
@@ -51,10 +53,34 @@ const { tag, posts } = Astro.props;
     <p class="mt-4 text-muted">
       {posts.length} post{posts.length === 1 ? "" : "s"}.
     </p>
+
+    {
+      /* The other half of the category<->tag connection: a tag isn't scoped
+         to one category the way a post is, so this shows every category it
+         actually shows up in rather than forcing a false one-to-one link. */
+      spannedCategories.length > 0 && (
+        <p class="mt-3 flex flex-wrap items-center gap-2 text-[0.85rem] text-dim">
+          <span>In:</span>
+          {spannedCategories.map((c) => (
+            <a
+              href={`/category/${c.slug}`}
+              class="inline-flex items-center gap-1.5 text-muted transition-colors duration-150 hover:text-accent"
+            >
+              <span
+                class="h-1.5 w-1.5 shrink-0 rounded-full"
+                style={`background-color: ${c.color}`}
+                aria-hidden="true"
+              />{" "}
+              {c.label}
+            </a>
+          ))}
+        </p>
+      )
+    }
   </section>
 
   <div class="wrap-wide pb-16">
-    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="grid-cards">
       {posts.map((post) => <li><PostGridCard post={post} /></li>)}
     </ul>
   </div>

@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import MarkX from "../components/MarkX.astro";
+import { categories } from "../lib/categories";
 ---
 
 <Base
@@ -17,6 +18,7 @@ import MarkX from "../components/MarkX.astro";
     </h1>
 
     <div class="relative mt-8 max-w-[36rem]">
+      <label for="search-input" class="sr-only">Search posts</label>
       <input
         id="search-input"
         type="search"
@@ -27,6 +29,29 @@ import MarkX from "../components/MarkX.astro";
     </div>
 
     <p id="search-status" class="mt-4 text-[0.88rem] text-dim" aria-live="polite"></p>
+
+    {
+      /* Only shown by the script when a query returns nothing — a dead end
+         with a text count and nowhere to go next is the one thing a search
+         page shouldn't do. */
+    }
+    <div id="search-empty" class="mt-6 hidden">
+      <p class="text-[0.9rem] text-muted">Try browsing instead:</p>
+      <ul class="mt-3 flex flex-wrap gap-2">
+        {
+          categories.map((c) => (
+            <li>
+              <a
+                href={`/category/${c.slug}`}
+                class="category-pill border border-line"
+              >
+                {c.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </section>
 
   <div class="wrap pb-16">
@@ -47,38 +72,54 @@ import MarkX from "../components/MarkX.astro";
   const input = document.getElementById("search-input") as HTMLInputElement;
   const status = document.getElementById("search-status") as HTMLParagraphElement;
   const results = document.getElementById("search-results") as HTMLUListElement;
+  const empty = document.getElementById("search-empty") as HTMLDivElement;
 
   let entries: Entry[] = [];
 
+  function resultRow(entry: Entry): HTMLLIElement {
+    const li = document.createElement("li");
+    li.className = "border-b border-line last:border-b-0";
+
+    const dateStr = new Date(entry.date).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+
+    const a = document.createElement("a");
+    a.href = `/posts/${entry.slug}`;
+    a.className = "block py-5 transition-colors duration-150 hover:text-accent sm:py-6";
+
+    const meta = document.createElement("span");
+    meta.className = "text-[0.78rem] text-dim";
+    meta.textContent = `${entry.category} · ${dateStr}`;
+
+    const h2 = document.createElement("h2");
+    h2.className = "mt-1 text-[1.1rem] font-semibold tracking-tight";
+    h2.textContent = entry.title;
+
+    const desc = document.createElement("p");
+    desc.className = "mt-1 line-clamp-2 max-w-[52ch] text-[0.92rem] leading-relaxed text-muted";
+    desc.textContent = entry.description;
+
+    a.append(meta, h2, desc);
+    li.append(a);
+    return li;
+  }
+
   function render(list: Entry[], query: string) {
-    results.innerHTML = "";
+    results.replaceChildren();
 
     if (query.trim() === "") {
       status.textContent = `${entries.length} posts indexed. Start typing to search.`;
+      empty.classList.add("hidden");
       return;
     }
 
     status.textContent = `${list.length} result${list.length === 1 ? "" : "s"} for "${query}"`;
+    empty.classList.toggle("hidden", list.length > 0);
 
-    for (const entry of list) {
-      const li = document.createElement("li");
-      li.className = "border-b border-line last:border-b-0";
-
-      const dateStr = new Date(entry.date).toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      });
-
-      li.innerHTML = `
-        <a href="/posts/${entry.slug}" class="block py-5 transition-colors duration-150 hover:text-accent sm:py-6">
-          <span class="text-[0.78rem] text-dim">${entry.category} · ${dateStr}</span>
-          <h2 class="mt-1 text-[1.1rem] font-semibold tracking-tight">${entry.title}</h2>
-          <p class="mt-1 line-clamp-2 max-w-[52ch] text-[0.92rem] leading-relaxed text-muted">${entry.description}</p>
-        </a>
-      `;
-      results.appendChild(li);
-    }
+    for (const entry of list) results.appendChild(resultRow(entry));
   }
 
   function search(query: string) {
@@ -92,6 +133,16 @@ import MarkX from "../components/MarkX.astro";
     });
 
     render(matches, query);
+  }
+
+  // A debounce, not because 44 posts needs one, but because a linear scan on
+  // every keystroke is the kind of thing that's invisible now and a real
+  // stutter once this index has grown past a few hundred entries — cheap to
+  // add now, easy to forget once it's actually needed.
+  let debounceHandle: ReturnType<typeof setTimeout> | undefined;
+  function onInput() {
+    clearTimeout(debounceHandle);
+    debounceHandle = setTimeout(() => search(input.value), 120);
   }
 
   async function init() {
@@ -108,6 +159,6 @@ import MarkX from "../components/MarkX.astro";
     }
   }
 
-  input?.addEventListener("input", () => search(input.value));
+  input?.addEventListener("input", onInput);
   init();
 </script>

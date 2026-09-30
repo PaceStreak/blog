@@ -22,6 +22,7 @@ const category = categoryFor(post.data.tags);
   <div class="aspect-1200/630 w-full overflow-hidden border-b border-line bg-bg-alt">
     <img
       src={`/og/${post.id}.png`}
+      {/* Empty alt is deliberate, not an oversight: this image is a generated title card whose text duplicates the heading right below it - a screen reader announcing it would just repeat the post title a second time. */}
       alt=""
       loading="lazy"
       width="1200"
@@ -33,12 +34,17 @@ const category = categoryFor(post.data.tags);
   <div class="flex flex-1 flex-col p-5">
     <a
       href={`/category/${category.slug}`}
-      class="relative z-10 w-fit text-[0.74rem] font-medium tracking-tight text-accent transition-colors duration-150 hover:text-ink"
+      class="relative z-10 inline-flex w-fit items-center gap-1.5 text-[0.74rem] font-medium tracking-tight text-accent transition-colors duration-150 hover:text-ink"
     >
+      <span
+        class="h-1.5 w-1.5 shrink-0 rounded-full"
+        style={`background-color: ${category.color}`}
+        aria-hidden="true"
+      />{" "}
       {category.label}
     </a>
 
-    <h2 class="mt-2 text-[1.08rem] font-semibold leading-snug tracking-tight text-balance">
+    <h2 class="mt-2 line-clamp-2 text-[1.08rem] font-semibold leading-snug tracking-tight text-balance">
       <a
         href={`/posts/${post.id}`}
         class="transition-colors duration-150 after:absolute after:inset-0 group-hover:text-accent"
