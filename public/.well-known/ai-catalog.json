@@ -1,0 +1,17 @@
+{
+  "specVersion": "1.0",
+  "entries": [
+    {
+      "identifier": "urn:air:pacestreak:blog:post-index",
+      "displayName": "PaceStreak blog index",
+      "description": "Every post on how PaceStreak is built, with a one-line summary each. Read-only.",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
+      "url": "https://blog.pacestreak.com/llms.txt",
+      "representativeQueries": [
+        "How does PaceStreak's streak engine work?",
+        "How did PaceStreak build insights without AI?",
+        "What went wrong in PaceStreak's production outages?"
+      ]
+    }
+  ]
+}

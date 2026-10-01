@@ -29,3 +29,23 @@
 # changes; a day is plenty, and link-preview crawlers re-fetch anyway.
 /og/*
   Cache-Control: public, max-age=86400
+
+# HTML pages: no-transform stops the edge rewriting them (it was injecting a
+# Web Analytics beacon the CSP then blocked, logging a console error). Page
+# routes only, so it never merges with the immutable /_astro/* rule.
+/
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/:page
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/posts/:slug
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/tags/:tag
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/category/:slug
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+/page/:n
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
+/.well-known/ai-catalog.json
+  Content-Type: application/json; charset=utf-8
+  Access-Control-Allow-Origin: *
