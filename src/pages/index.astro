@@ -41,19 +41,22 @@ const jsonLd = {
   path="/"
   jsonLd={jsonLd}
 >
-  <section class="wrap-wide pb-8 pt-16 sm:pb-10 sm:pt-20">
+  <section class="wrap-wide pb-10 pt-14 sm:pb-12 sm:pt-20">
     <p class="kicker">
       <MarkX size={13} /> Building in the open
     </p>
-    <h1 class="mt-4 text-[2.6rem] font-semibold tracking-tight text-balance sm:text-[3.4rem]">
-      Blog
+    <h1 class="mt-5 max-w-4xl text-[clamp(2.6rem,6.5vw,4.75rem)] leading-[1] font-extrabold tracking-[-0.035em] text-balance">
+      What broke, what it cost, and what changed.
     </h1>
-    <p class="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-muted text-pretty">
+    <p class="mt-6 max-w-2xl text-[1.1rem] leading-relaxed text-muted text-pretty">
       Notes from building{" "}
       <a class="text-accent u-link" href="https://www.pacestreak.com">PaceStreak</a>, a
-      habit and streak tracker. What broke, what it cost, and what I would do
-      differently — written as it happens rather than tidied up afterwards.
+      habit and streak tracker. Written as it happens rather than tidied up afterwards.
     </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn" href="/search">Search the posts</a>
+      <a class="btn btn--ghost" href="/rss.xml">Follow by RSS</a>
+    </div>
   </section>
 
   <CategoryNav />

@@ -114,19 +114,20 @@
 }
 
 @layer components {
-  /* A small uppercase label that precedes a heading — "field notes", "on this
+  /* A small label that precedes a heading — "field notes", "on this
      page" — set in the mono face so it reads as a caption, not a subheading
      competing with the H1 for size. */
   .kicker {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--color-line-lit);
+    border-radius: 999px;
+    background: var(--color-surface);
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-dim);
+    color: var(--color-muted);
   }
 
   .kicker .mark-x {
@@ -146,14 +147,6 @@
     border: 1px solid var(--color-line);
     border-radius: 10px;
     background: var(--color-surface-2);
-    background-image: repeating-linear-gradient(
-      to right,
-      var(--color-line-lit) 0 5px,
-      transparent 5px 10px
-    );
-    background-repeat: no-repeat;
-    background-position: bottom 1.35rem left 0;
-    background-size: 100% 1px;
     transition:
       border-color 180ms var(--ease-out),
       transform 180ms var(--ease-out);
@@ -211,7 +204,7 @@
     margin-inline: auto;
     /* padding-inline, never the `padding` shorthand — a shorthand added later
        resets this to 0 and collapses the gutter on mobile. */
-    padding-inline: 24px;
+    padding-inline: 20px;
   }
 
   /* Wider than `.wrap`: the post template needs room for the article's own
@@ -220,9 +213,9 @@
      sidebar. */
   .wrap-post {
     width: 100%;
-    max-width: 62rem;
+    max-width: 64rem;
     margin-inline: auto;
-    padding-inline: 24px;
+    padding-inline: 20px;
   }
 
   /* Wider still: the image-led card grids (index, category, tags) need room
@@ -230,9 +223,34 @@
      of being legible. */
   .wrap-wide {
     width: 100%;
-    max-width: 78rem;
+    max-width: 80rem;
     margin-inline: auto;
-    padding-inline: 24px;
+    padding-inline: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .wrap-wide,
+    .wrap-post,
+    .wrap {
+      padding-inline: 32px;
+    }
+  }
+
+  /* Big screens get more columns and a wider measure for the grid, instead
+     of a narrow column floating in empty margin. */
+  @media (min-width: 1536px) {
+    .wrap-wide {
+      max-width: 92rem;
+    }
+    .wrap-post {
+      max-width: 70rem;
+    }
+  }
+
+  @media (min-width: 1920px) {
+    .wrap-wide {
+      max-width: 108rem;
+    }
   }
 
   /* A grid that never leaves one card floating alone in a fixed 3-column
@@ -244,6 +262,13 @@
     display: grid;
     gap: 1.25rem;
     grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  }
+
+  .grid-cards > li {
+    display: flex;
+  }
+  .grid-cards > li > article {
+    width: 100%;
   }
 
   .category-pill {
@@ -435,21 +460,6 @@
   /* A quiet rule instead of a full-width h2 border: the article is one
      column, so weight alone should carry section breaks. This just gives
      `##` a touch more presence than bold body text. */
-  .article h2 {
-    position: relative;
-    padding-inline-start: 1.1rem;
-  }
-
-  .article h2::before {
-    content: "";
-    position: absolute;
-    inset-block: 0.2em 0.35em;
-    inset-inline-start: 0;
-    width: 3px;
-    border-radius: 2px;
-    background: var(--color-accent);
-  }
-
   .article ul,
   .article ol {
     padding-inline-start: 1.3rem;
@@ -651,5 +661,64 @@
     to {
       transform: scaleX(1);
     }
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    font-size: 0.95rem;
+    font-weight: 650;
+    line-height: 1;
+    white-space: nowrap;
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 160ms ease,
+      border-color 160ms ease;
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn--sm {
+    padding: 0.55rem 1rem;
+    font-size: 0.88rem;
+  }
+  .btn--ghost {
+    background: transparent;
+    border-color: var(--color-line-lit);
+    color: var(--color-ink);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn:not(.btn--ghost):hover {
+      box-shadow: 0 10px 30px -10px rgb(211 255 62 / 0.55);
+    }
+    .btn--ghost:hover {
+      background: var(--color-surface-2);
+    }
+  }
+
+  main > section:first-child {
+    background-image: radial-gradient(
+      60rem 26rem at 50% -8rem,
+      rgb(211 255 62 / 0.08),
+      transparent 70%
+    );
+  }
+
+  .cta-band {
+    border: 1px solid var(--color-line-lit);
+    border-radius: 28px;
+    padding: clamp(2rem, 6vw, 4rem);
+    background:
+      radial-gradient(34rem 16rem at 50% 0%, rgb(211 255 62 / 0.14), transparent 70%),
+      var(--color-surface);
   }
 }

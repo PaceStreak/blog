@@ -37,9 +37,8 @@ const year = new Date().getFullYear();
 const nav = [
   { href: "/tags", label: "Tags" },
   { href: "/search", label: "Search" },
-  { href: "https://www.pacestreak.com", label: "Product" },
+  { href: "https://www.pacestreak.com/features", label: "Features" },
   { href: "/rss.xml", label: "RSS" },
-  { href: "https://github.com/PaceStreak", label: "GitHub" },
 ];
 ---
 
@@ -89,7 +88,7 @@ const nav = [
     <header
       class="site-header sticky top-0 z-50 border-b border-line/80 bg-bg/85 backdrop-blur-md"
     >
-      <nav class="wrap flex h-16 items-center justify-between gap-4" aria-label="Main">
+      <nav class="wrap-wide flex h-16 items-center justify-between gap-4" aria-label="Main">
         <a href="/" class="flex items-baseline gap-2 font-semibold tracking-tight">
           <span>Pace<span class="text-accent">Streak</span></span>
           <span class="text-[0.78rem] font-normal text-dim">blog</span>
@@ -99,12 +98,13 @@ const nav = [
             nav.map((item) => (
               <a
                 href={item.href}
-                class="rounded-full px-3 py-1.5 text-[0.87rem] text-muted transition-colors duration-150 hover:bg-surface-2 hover:text-ink"
+                class="hidden rounded-full px-3 py-1.5 text-[0.87rem] text-muted transition-colors duration-150 hover:bg-surface-2 hover:text-ink sm:inline-block"
               >
                 {item.label}
               </a>
             ))
           }
+          <a class="btn btn--sm ml-2" href="https://app.pacestreak.com/signup">Get started</a>
         </div>
       </nav>
     </header>
@@ -113,16 +113,61 @@ const nav = [
       <slot />
     </main>
 
-    <footer class="mt-24 border-t border-line py-10">
-      <div
-        class="wrap flex flex-col gap-3 text-[0.85rem] text-dim sm:flex-row sm:items-center sm:justify-between"
-      >
+    <section class="wrap-wide mt-20">
+      <div class="cta-band flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
+            Build the habit. Keep the week.
+          </h2>
+          <p class="mt-2 max-w-xl text-muted">
+            PaceStreak is a habit and streak tracker for training and everything else worth doing regularly.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a class="btn" href="https://app.pacestreak.com/signup">Get started free</a>
+          <a class="btn btn--ghost" href="https://www.pacestreak.com/features">See the features</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="mt-16 border-t border-line bg-bg-alt py-12">
+      <div class="wrap-wide grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+        <div>
+          <p class="font-semibold">Pace<span class="text-accent">Streak</span> blog</p>
+          <p class="mt-3 max-w-xs text-[0.92rem] text-dim">
+            Building a habit and streak tracker in the open.
+          </p>
+        </div>
+        <nav aria-label="Blog">
+          <h2 class="text-[0.78rem] font-semibold tracking-[0.14em] text-dim uppercase">Read</h2>
+          <ul class="mt-4 space-y-2.5 text-[0.94rem]">
+            <li><a class="text-muted hover:text-ink" href="/">All posts</a></li>
+            <li><a class="text-muted hover:text-ink" href="/tags">Tags</a></li>
+            <li><a class="text-muted hover:text-ink" href="/search">Search</a></li>
+            <li><a class="text-muted hover:text-ink" href="/rss.xml">RSS</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Product">
+          <h2 class="text-[0.78rem] font-semibold tracking-[0.14em] text-dim uppercase">Product</h2>
+          <ul class="mt-4 space-y-2.5 text-[0.94rem]">
+            <li><a class="text-muted hover:text-ink" href="https://www.pacestreak.com">PaceStreak</a></li>
+            <li><a class="text-muted hover:text-ink" href="https://www.pacestreak.com/features">Features</a></li>
+            <li><a class="text-muted hover:text-ink" href="https://www.pacestreak.com/faq">FAQ</a></li>
+            <li><a class="text-muted hover:text-ink" href="https://app.pacestreak.com/signup">Get started</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Company">
+          <h2 class="text-[0.78rem] font-semibold tracking-[0.14em] text-dim uppercase">Company</h2>
+          <ul class="mt-4 space-y-2.5 text-[0.94rem]">
+            <li><a class="text-muted hover:text-ink" href="https://status.pacestreak.com">Status</a></li>
+            <li><a class="text-muted hover:text-ink" href="https://github.com/PaceStreak" rel="noopener">GitHub</a></li>
+            <li><a class="text-muted hover:text-ink" href="https://www.pacestreak.com/privacy">Privacy</a></li>
+            <li><a class="text-muted hover:text-ink" href="https://www.pacestreak.com/terms">Terms</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="wrap-wide mt-10 border-t border-line pt-6 text-[0.85rem] text-dim">
         <span>&copy; {year} PaceStreak</span>
-        <p class="footer-links">
-          <a class="u-link" href="https://www.pacestreak.com">pacestreak.com</a>
-          <a class="u-link" href="https://status.pacestreak.com">Status</a>
-          <a class="u-link" href="/rss.xml">RSS</a>
-        </p>
       </div>
     </footer>
   </body>
