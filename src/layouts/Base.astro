@@ -1,5 +1,8 @@
 ---
 import "../styles/global.css";
+// Preloaded so the first paint already uses Archivo: text drawn in the
+// fallback and re-wrapped when the font arrived was a layout shift.
+import archivoUrl from "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url";
 
 interface Props {
   title: string;
@@ -47,6 +50,7 @@ const nav = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

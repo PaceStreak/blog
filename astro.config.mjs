@@ -9,7 +9,10 @@ export default defineConfig({
   // Trailing slashes must match what Cloudflare Pages serves, or canonical
   // URLs and the sitemap disagree with reality.
   trailingSlash: "never",
-  build: { format: "file" },
+  // CSS inlined into each page so the first paint doesn't wait on a
+  // render-blocking request. The blog's style-src already allows inline
+  // styles (Shiki needs them; see public/_headers), so no hashes are needed.
+  build: { format: "file", inlineStylesheets: "always" },
   markdown: {
     shikiConfig: { theme: "github-dark-default", wrap: true },
   },
