@@ -5,12 +5,20 @@ import PostGridCard from "../components/PostGridCard.astro";
 import FeaturedPost from "../components/FeaturedPost.astro";
 import CategoryNav from "../components/CategoryNav.astro";
 import MarkX from "../components/MarkX.astro";
+import Pager from "../components/Pager.astro";
+import { paginate } from "../lib/pagination";
 
 // Drafts are excluded from the index, the feed and the sitemap — set
 // `draft: true` in a post's frontmatter to keep working on it in the open.
-const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+const allPosts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+
+// The front page is page 1 of the archive, not "every post ever written" —
+// further pages live at /page/2, /page/3, ... (see src/pages/page/[page].astro,
+// which shares this same paginate() helper so the two never drift apart on
+// page size and so no post is ever skipped or duplicated between them).
+const { items: posts, totalPages } = paginate(allPosts, 1);
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -40,7 +48,7 @@ const jsonLd = {
     <h1 class="mt-4 text-[2.6rem] font-semibold tracking-tight text-balance sm:text-[3.4rem]">
       Blog
     </h1>
-    <p class="mt-5 max-w-[36rem] text-[1.05rem] leading-relaxed text-muted text-pretty">
+    <p class="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-muted text-pretty">
       Notes from building{" "}
       <a class="text-accent u-link" href="https://www.pacestreak.com">PaceStreak</a>, a
       habit and streak tracker. What broke, what it cost, and what I would do
@@ -69,6 +77,8 @@ const jsonLd = {
               </ul>
             )
           }
+
+          <Pager currentPage={1} totalPages={totalPages} basePath="/" />
         </>
       )
     }

@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import PostGridCard from "../../components/PostGridCard.astro";
+import CategoryNav from "../../components/CategoryNav.astro";
+import Pager from "../../components/Pager.astro";
+import { paginate } from "../../lib/pagination";
+
+export async function getStaticPaths() {
+  const allPosts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+  const { totalPages } = paginate(allPosts, 1);
+
+  // Page 1 is "/" (index.astro) — this route starts at 2 so there's never a
+  // second URL for the same content.
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => ({
+    params: { page: String(i + 2) },
+  }));
+}
+
+const page = Number(Astro.params.page);
+
+const allPosts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const { items: posts, totalPages } = paginate(allPosts, page);
+---
+
+<Base
+  title={`Blog — page ${page}`}
+  description={`Older posts from the PaceStreak blog, page ${page} of ${totalPages}.`}
+  path={`/page/${page}`}
+>
+  <section class="wrap-wide pb-8 pt-16 sm:pb-10 sm:pt-20">
+    <p class="kicker">Page {page} of {totalPages}</p>
+    <h1 class="mt-4 text-[2.4rem] font-semibold tracking-tight sm:text-[2.8rem]">
+      Older posts
+    </h1>
+  </section>
+
+  <CategoryNav />
+
+  <div class="wrap-wide py-10 sm:py-12">
+    <ul class="grid-cards">
+      {posts.map((post) => (
+        <li>
+          <PostGridCard post={post} />
+        </li>
+      ))}
+    </ul>
+
+    <Pager currentPage={page} totalPages={totalPages} basePath="/" />
+  </div>
+</Base>

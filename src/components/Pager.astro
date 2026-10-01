@@ -1,0 +1,79 @@
+---
+import { pageWindow } from "../lib/pagination";
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  /** "/" for the index archive; "/tags/react" etc. for a scoped one. Page 1
+      always lives at this path with no suffix, matching how `index.astro`
+      owns "/" rather than redirecting it to "/page/1". */
+  basePath: string;
+}
+
+const { currentPage, totalPages, basePath } = Astro.props;
+
+function hrefFor(page: number): string {
+  if (page === 1) return basePath;
+  const base = basePath === "/" ? "" : basePath;
+  return `${base}/page/${page}`;
+}
+
+const windowed = pageWindow(currentPage, totalPages);
+---
+
+{
+  totalPages > 1 && (
+    <nav class="mt-14 flex items-center justify-between gap-4" aria-label="Pagination">
+      <a
+        href={currentPage > 1 ? hrefFor(currentPage - 1) : undefined}
+        aria-disabled={currentPage === 1}
+        class:list={[
+          "rounded-full border border-line px-4 py-2 text-[0.85rem] text-muted transition-colors duration-150",
+          currentPage === 1
+            ? "pointer-events-none opacity-40"
+            : "hover:border-accent hover:text-accent",
+        ]}
+      >
+        &larr; Newer
+      </a>
+
+      <ul class="flex items-center gap-1">
+        {windowed.map((page) =>
+          page === null ? (
+            <li aria-hidden="true" class="px-1.5 text-[0.85rem] text-dim">
+              &hellip;
+            </li>
+          ) : (
+            <li>
+              <a
+                href={hrefFor(page)}
+                aria-current={page === currentPage ? "page" : undefined}
+                class:list={[
+                  "flex h-8 w-8 items-center justify-center rounded-full text-[0.85rem] transition-colors duration-150",
+                  page === currentPage
+                    ? "bg-accent font-medium text-accent-ink"
+                    : "text-muted hover:bg-surface-2 hover:text-ink",
+                ]}
+              >
+                {page}
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
+
+      <a
+        href={currentPage < totalPages ? hrefFor(currentPage + 1) : undefined}
+        aria-disabled={currentPage === totalPages}
+        class:list={[
+          "rounded-full border border-line px-4 py-2 text-[0.85rem] text-muted transition-colors duration-150",
+          currentPage === totalPages
+            ? "pointer-events-none opacity-40"
+            : "hover:border-accent hover:text-accent",
+        ]}
+      >
+        Older &rarr;
+      </a>
+    </nav>
+  )
+}

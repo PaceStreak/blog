@@ -25,6 +25,24 @@
   }
 }
 
+/* The spec's default cross-fade blends old/new root snapshots with
+   `mix-blend-mode: plus-lighter`, additive against a transparent backdrop.
+   Between two pages with very different heights (eg. a tag page cross-fading
+   into the index's tall hero + featured-post image) the two full-page
+   snapshots don't line up, and plus-lighter makes whichever page's content
+   sits in the mismatched region show through the other as bled, oversized
+   ghost text instead of a clean fade. Isolating the pair and forcing normal
+   blending makes it a straightforward opacity cross-fade with no show-through,
+   regardless of how different the two pages' layouts are. */
+::view-transition-image-pair(root) {
+  isolation: isolate;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+}
+
 @theme {
   --color-bg: #0a0a0b;
   --color-bg-alt: #0e0e10;
