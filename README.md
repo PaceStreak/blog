@@ -1,7 +1,7 @@
 # PaceStreak Blog
 
 The blog at **[blog.pacestreak.com](https://blog.pacestreak.com)** — notes on
-building PaceStreak in the open: seventy-seven posts so far, on the streak
+building PaceStreak in the open: eighty-four posts so far, on the streak
 engine, privacy, infrastructure and every release. Every repository they
 describe is public, so each post can be checked against the code.
 
