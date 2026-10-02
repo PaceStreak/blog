@@ -11,6 +11,10 @@ Notable changes to the blog itself, not to its posts.
 - A share card per post (`dist/og/<slug>.png`), rendered at build time with
   Satori and resvg; CI fails if a post has none.
 
+- Seven posts on the 2 October release: the plate calculator, habit
+  weekdays and pauses, install moments, reactions and the coach overview,
+  account merging, parking unsynced writes, and the load test. Eighty-four
+  posts in all.
 - Ten posts covering everything built so far: streaks, XP, offline sync, auth,
   social privacy, the worker, data ownership, pauses and file import, the
   website rebuild, and a status report.
