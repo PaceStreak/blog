@@ -10,9 +10,9 @@ SLA beyond that — what you will get is a straight answer.
 
 The organization-wide policy is at
 [PaceStreak/.github](https://github.com/PaceStreak/.github/blob/main/SECURITY.md).
-This file exists separately because **community health files from a public
-`.github` repository do not apply to private repositories**, and this one is
-private.
+This file is kept per-repository, alongside the organisation-wide copy in
+[PaceStreak/.github](https://github.com/PaceStreak/.github), so the policy
+travels with the code if this repository is forked or mirrored.
 
 ## Scope
 

@@ -5,6 +5,10 @@ date: 2026-09-25T20:00:00Z
 tags: ["github", "infrastructure", "status"]
 ---
 
+> **Update, 2 October 2026:** every PaceStreak repository is now public.
+> See [All of PaceStreak is open source](/posts/all-of-pacestreak-is-open-source).
+> The reasoning below still explains why these two had to be public first.
+
 Almost every PaceStreak repository is private. Two are public, and both look
 like mistakes to anyone tidying up. They are not.
 
