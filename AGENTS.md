@@ -26,7 +26,8 @@ npm run build && python3 check-html.py dist   # what CI and Cloudflare run
   analytics or third-party script. `assetsInlineLimit: 0` in
   `astro.config.mjs` is load-bearing.
 - `Cache-Control: no-transform` on page routes in `public/_headers` is
-  load-bearing (it stops Cloudflare injecting a beacon the CSP blocks).
+  a guard: it stops Cloudflare rewriting pages (Web Analytics injected a
+  beacon once; it is now off and must stay off).
 - `404.html` must exist in `dist`; CI asserts it.
 - Astro collapses whitespace between text and an inline element; use `{" "}`.
   `check-html.py` fails the build on it.
