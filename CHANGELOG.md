@@ -6,6 +6,8 @@ Notable changes to the blog itself, not to its posts.
 
 ### Added
 
+- `AGENTS.md` with this repository's commands and rules for coding agents; the
+  README and architecture notes now describe the live deployment, not a plan.
 - A share card per post (`dist/og/<slug>.png`), rendered at build time with
   Satori and resvg; CI fails if a post has none.
 

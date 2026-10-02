@@ -1,7 +1,9 @@
 # PaceStreak Blog
 
 The blog at **[blog.pacestreak.com](https://blog.pacestreak.com)** — notes on
-building PaceStreak in the open.
+building PaceStreak in the open: seventy-seven posts so far, on the streak
+engine, privacy, infrastructure and every release. Every repository they
+describe is public, so each post can be checked against the code.
 
 Copyright (c) 2026 PaceStreak. Licensed under [AGPL-3.0](./LICENSE).
 
@@ -36,9 +38,10 @@ while you work on it.
 ## Running it locally
 
 ```bash
-npm install
+npm ci
 npm run dev      # http://localhost:4321
 npm run build    # writes dist/
+python3 check-html.py dist   # the same guard CI runs
 ```
 
 ## Deploying
@@ -58,7 +61,9 @@ src/layouts/Base      Head, nav, footer, structured data.
 src/components/       PostCard.
 src/lib/post.ts       Date formatting and reading time, shared so the index,
                       the tag pages and the post template cannot disagree.
-src/pages/            Index, post route, tag pages, RSS feed, 404.
+src/pages/            Index, post route, tag pages, RSS feed, 404, and
+                      og/[slug].png, the per-post share cards.
+src/og/               The share-card renderer (Satori + resvg, vendored Noto Sans).
 src/styles/global.css Tailwind theme tokens + article typography.
 public/               favicon, robots.txt, _headers.
 ```
@@ -86,5 +91,11 @@ hang utilities on.
 **Code blocks are highlighted at build time** by Shiki, so there is no
 highlighting library in the browser.
 
-**The og:image points at the product site**, `www.pacestreak.com/brand/social/og.png`.
-If that path ever moves, link previews for every post break at once.
+**Every post gets its own share card**, rendered at build time into
+`dist/og/<slug>.png`; CI fails if a post has none. Pages that aren't posts
+(the index, tags, 404) fall back to the product site's
+`www.pacestreak.com/brand/social/og.png`, so if that path ever moves, those
+previews break at once.
+
+**`404.html` is asserted in CI.** Without it Cloudflare Pages answers every
+unknown path, `/robots.txt` included, with the index page and a 200.
