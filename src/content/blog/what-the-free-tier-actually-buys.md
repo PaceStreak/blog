@@ -5,6 +5,11 @@ date: 2026-09-30T18:00:00Z
 tags: ["infrastructure", "cloudflare", "deployment"]
 ---
 
+> **Update, 11 October 2026:** the API no longer runs on the setup described
+> here. It moved to FastAPI Cloud after the VM's public IP turned out not to
+> be free, and the worker now runs from a scheduled GitHub Actions workflow.
+> This post is left as it was written.
+
 The [outage two posts back](/posts/one-outage-four-root-causes) had four
 separate causes, and every one of them was easier to have in the same hour
 because the box underneath had no slack in it anywhere. That's worth
