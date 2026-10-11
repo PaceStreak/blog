@@ -5,6 +5,11 @@ date: 2026-09-27T18:00:00Z
 tags: ["api", "infrastructure", "security", "deployment"]
 ---
 
+> **Update, 11 October 2026:** the API no longer runs on the setup described
+> here. It moved to FastAPI Cloud after the VM's public IP turned out not to
+> be free, and the worker now runs from a scheduled GitHub Actions workflow.
+> This post is left as it was written.
+
 The [last status report](/posts/where-pacestreak-is-now) left one thing
 unresolved: where the API runs. That's decided now, and live at
 `api.pacestreak.com`.
