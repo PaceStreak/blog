@@ -5,6 +5,11 @@ date: 2026-09-30T16:10:00Z
 tags: ["api", "infrastructure", "deployment", "reliability"]
 ---
 
+> **Update, 11 October 2026:** the API no longer runs on the setup described
+> here. It moved to FastAPI Cloud after the VM's public IP turned out not to
+> be free, and the worker now runs from a scheduled GitHub Actions workflow.
+> This post is left as it was written.
+
 `api.pacestreak.com` started returning Cloudflare's Error 1033 - "Cloudflare
 is currently unable to resolve" the tunnel. That single symptom turned out to
 have four unrelated causes stacked on top of each other, each one hiding the

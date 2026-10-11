@@ -5,6 +5,11 @@ date: 2026-10-02T17:00:00Z
 tags: ["performance", "infrastructure", "engineering"]
 ---
 
+> **Update, 11 October 2026:** the API no longer runs on the setup described
+> here. It moved to FastAPI Cloud after the VM's public IP turned out not to
+> be free, and the worker now runs from a scheduled GitHub Actions workflow.
+> This post is left as it was written.
+
 The API runs on a free-tier e2-micro: two shared vCPUs, 1 GB of memory, one
 API process. "Is that enough?" deserved a number, so there's now a load test
 in the API repository, `scripts/loadtest.py`.
