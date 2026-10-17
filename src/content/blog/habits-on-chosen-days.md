@@ -21,12 +21,12 @@ What the schedule changes:
   still there on the habit page, and doing it anyway still counts.
 - **Reminders** only fire on planned days.
 - **The first week.** A habit started mid-week can only ask for the days left
-  in that week. With a schedule it counts only the *planned* days left, so a
+  in that week. With a schedule it counts only the _planned_ days left, so a
   Tuesday-and-Thursday habit started on a Friday doesn't fail its first week by
   design.
 
 What it doesn't change: streaks still count weeks, and the weekly target is
-still yours. The schedule says *when* you plan to; the target says *how often*
+still yours. The schedule says _when_ you plan to; the target says _how often_
 counts.
 
 ## Pausing one habit

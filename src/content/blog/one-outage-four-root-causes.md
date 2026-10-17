@@ -93,10 +93,10 @@ disown
 ```
 
 - and poll the log from a separate connection instead of trusting a
-single long-lived one to survive. `grub-install` and `shim-signed` both
-completed cleanly for the `x86_64-efi` platform once given the room to
-finish, `dpkg --audit` came back empty, `apt full-upgrade` had nothing left
-queued, and only then was a reboot safe. It came back clean.
+  single long-lived one to survive. `grub-install` and `shim-signed` both
+  completed cleanly for the `x86_64-efi` platform once given the room to
+  finish, `dpkg --audit` came back empty, `apt full-upgrade` had nothing left
+  queued, and only then was a reboot safe. It came back clean.
 
 ## Third cause: a stale front-end on the database pooler
 
@@ -119,7 +119,7 @@ The detail that cracked it: the `worker` service, running the identical
 image against the identical `DATABASE_URL`, had one connection open and
 idle the whole time, working perfectly. Same code, same credentials, same
 network. The only difference was that `worker`'s connection was already
-established before things went wrong, and `api` needed a *new* one.
+established before things went wrong, and `api` needed a _new_ one.
 
 Neon's `-pooler` hostname routes through PgBouncer in front of the actual
 Postgres backend. `pg_stat_activity` shows backend-level state - it has no
@@ -202,7 +202,7 @@ RAM, and this stack asks it to run a Swarm manager, two application
 containers, a tunnel daemon, and two logging agents at once, with nothing
 held in reserve for an OS upgrade, a burst of container restarts, or a
 database reconnect to happen at the same time as everything else. Each of
-the four causes above is the kind of thing that happens *occasionally* on a
+the four causes above is the kind of thing that happens _occasionally_ on a
 box with headroom - a swap spike, an interrupted upgrade, a pooler that
 needs a kick, a slow boot. On this box, they happened in the same hour,
 because there was no slack anywhere for any one of them to be absorbed

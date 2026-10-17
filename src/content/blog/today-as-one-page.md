@@ -13,7 +13,7 @@ below a streak strip, a coach card and a getting-started list.
 
 The top of Today is now a tear-off date block: the weekday on a red band, the
 day number huge and condensed, the month under it. Beside it, your whole-life
-chain, *6 weeks unbroken*, in red. It's the one number the product is built to
+chain, _6 weeks unbroken_, in red. It's the one number the product is built to
 protect.
 
 ## This week, as a board

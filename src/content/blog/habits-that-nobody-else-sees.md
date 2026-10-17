@@ -30,7 +30,7 @@ that fails silently if someone forgets it.
 
 For a habit you're breaking, every day since you started is clean unless you
 log a slip. A slip is logged, not punished: the clean-day count restarts, but
-the weekly streak asks for *most* days, not perfect ones.
+the weekly streak asks for _most_ days, not perfect ones.
 
 ## Checked in tests
 

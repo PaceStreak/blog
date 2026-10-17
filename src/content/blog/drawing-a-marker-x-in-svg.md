@@ -36,8 +36,14 @@ its real length. Then the CSS is the same for every stroke:
   stroke-dasharray: 1;
   animation: marker-draw 150ms cubic-bezier(0.3, 0.6, 0.2, 1) both;
 }
-.marker-stroke-2 { animation-delay: 120ms; }
-@keyframes marker-draw { from { stroke-dashoffset: 1; } }
+.marker-stroke-2 {
+  animation-delay: 120ms;
+}
+@keyframes marker-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
 ```
 
 The second stroke waits 120ms, so the whole mark takes about a quarter of a

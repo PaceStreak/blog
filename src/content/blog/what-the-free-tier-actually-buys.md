@@ -29,7 +29,7 @@ sales page, since the two don't always agree:
 - **Disk**: 30 GB `pd-standard`. The free allowance is up to 30 GB of
   standard persistent disk - not SSD, that's a different, billed tier
   entirely. This is sitting precisely at that number, not under it.
-- **IP address**: ephemeral, not reserved. This matters because a *static*
+- **IP address**: ephemeral, not reserved. This matters because a _static_
   external IP is free only while it's attached to a running instance and
   starts billing the moment it isn't - so leaving it ephemeral, and letting
   DNS point at whatever address comes back, is the version that can't
@@ -52,7 +52,7 @@ held in reserve. Every distinct failure in the outage two posts back - a
 swap spike taking down the tunnel, an interrupted OS upgrade needing to
 finish, a database pooler needing a restart, a health-check crash loop
 feeding its own contention - is the kind of thing that happens
-*occasionally* on a box with room to spare, and stops being occasional the
+_occasionally_ on a box with room to spare, and stops being occasional the
 moment the box has none. None of the four causes were caused by being on
 the free tier specifically. All four were made worse, and made to happen in
 the same hour instead of spread across a quieter week, by exactly how

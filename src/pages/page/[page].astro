@@ -33,7 +33,9 @@ const { items: posts, totalPages } = paginate(allPosts, page);
   path={`/page/${page}`}
 >
   <section class="wrap-wide pb-8 pt-16 sm:pb-10 sm:pt-20">
-    <p class="kicker">Page {page} of {totalPages}</p>
+    <p class="kicker">
+      Page {page} of {totalPages}
+    </p>
     <h1 class="mt-4 text-[2.4rem] font-semibold tracking-tight sm:text-[2.8rem]">
       Older posts
     </h1>

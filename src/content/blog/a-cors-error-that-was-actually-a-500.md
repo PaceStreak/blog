@@ -20,7 +20,7 @@ through three unrelated layers and the error message points at none of them.
 
 A CORS error in the console almost always means one of two very different
 things: the server genuinely didn't send the right header, or the server
-crashed before it had the chance to send *any* headers from the app's own
+crashed before it had the chance to send _any_ headers from the app's own
 middleware stack, and the browser's only honest way to describe "the
 response didn't have what I needed" is to blame CORS. The second case is far
 more common in practice than people expect, because in Starlette and
@@ -31,7 +31,7 @@ actual route handler - and it is not the outermost one.
 including `CORSMiddleware`. It exists specifically to catch anything your
 own code didn't - an unhandled exception in a route, in a dependency, in
 another middleware - and turn it into a 500 instead of an unhandled crash.
-But because it sits *outside* `CORSMiddleware`, a request that dies there
+But because it sits _outside_ `CORSMiddleware`, a request that dies there
 never passes back through the layer that would have added the
 `Access-Control-Allow-Origin` header. The browser sees a response with no
 CORS headers and reports exactly that, truthfully, which is why the message
@@ -60,7 +60,7 @@ Docker Compose's short-form `tmpfs:` key is valid syntax under plain
 `docker compose up`. It is **silently ignored** under `docker stack deploy` -
 Swarm's compose parser accepts the file, accepts the key, and drops it on
 the floor without a warning. `read_only: true` from the same hardening block
-still applied, because that key *is* honored under Swarm. The net result:
+still applied, because that key _is_ honored under Swarm. The net result:
 a container that's read-only everywhere, including the one path
 (`/tmp`) an exception was supposed to be carved out for it not to be.
 `tempfile.mkdtemp()` tried to create a directory on a read-only filesystem,

@@ -68,18 +68,16 @@ const { category, posts } = Astro.props;
   </section>
 
   <div class="wrap-wide pb-16">
-    {
-      posts.length === 0 ? (
-        <p class="text-muted">Nothing here yet.</p>
-      ) : (
-        <ul class="grid-cards">
-          {posts.map((post) => (
-            <li>
-              <PostGridCard post={post} />
-            </li>
-          ))}
-        </ul>
-      )
-    }
+    {posts.length === 0 ? (
+      <p class="text-muted">Nothing here yet.</p>
+    ) : (
+      <ul class="grid-cards">
+        {posts.map((post) => (
+          <li>
+            <PostGridCard post={post} />
+          </li>
+        ))}
+      </ul>
+    )}
   </div>
 </Base>

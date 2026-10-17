@@ -1,5 +1,5 @@
 ---
-title: "\"Meh\" is not a component bug"
+title: '"Meh" is not a component bug'
 description: "Fixing the same-size card grids made the site more correct and no less forgettable. The actual complaint was about the whole page, not a pattern - which meant the fix had to be a hero, motion and rhythm pass, not another round of component surgery."
 date: 2026-09-27T12:33:13Z
 tags: ["web", "design", "css"]
@@ -52,7 +52,7 @@ homepage's fold.
 
 The [previous post](/posts/the-same-size-card-grid-is-the-lazy-container)
 and this one are twenty minutes apart and both real, necessary work - but
-they're different *kinds* of work, and conflating them would have meant
+they're different _kinds_ of work, and conflating them would have meant
 either shipping the pattern fix late while chasing vibes, or shipping vibes
 on top of a structurally lazy layout. Fix what's mechanically wrong first,
 verify it's actually fixed, and only then ask whether the result is any

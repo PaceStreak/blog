@@ -28,7 +28,7 @@ weight loaded, so you're correcting rather than starting over.
 
 Type the target and it lays out each side, greedily from the heaviest plate
 you have. If the plates can't make it exactly, it says how far short you are
-and the closest weight you *can* make, instead of quietly rounding.
+and the closest weight you _can_ make, instead of quietly rounding.
 
 ## Which bar
 
@@ -38,7 +38,7 @@ curls keep the EZ bar and squats keep the Olympic one. A custom weight is one
 field away for the odd bar at your gym.
 
 If you've set up a gym with its own plates and bar, that gym's set is used
-instead of a full commercial one, and its bar is marked *gym* in the list.
+instead of a full commercial one, and its bar is marked _gym_ in the list.
 
 ## Units
 

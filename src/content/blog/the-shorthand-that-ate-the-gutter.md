@@ -12,7 +12,9 @@ text touching the edge of a phone screen.
 Then a section needed more vertical space, and got it like this:
 
 ```css
-.section { padding: 4rem 0; }
+.section {
+  padding: 4rem 0;
+}
 ```
 
 On a desktop nothing changed, because the container is narrower than the
@@ -34,7 +36,9 @@ only visible when the screen is narrow.
 Say only what you mean:
 
 ```css
-.section { padding-block: 4rem; }
+.section {
+  padding-block: 4rem;
+}
 ```
 
 `padding-block` sets the top and bottom and leaves the inline sides alone.

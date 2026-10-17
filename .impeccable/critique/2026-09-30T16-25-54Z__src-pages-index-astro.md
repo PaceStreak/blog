@@ -11,21 +11,22 @@ target_path: /home/alzywelzy/Documents/pacestreak/blog/src/pages/index.astro
 timestamp: 2026-09-30T16-25-54Z
 slug: src-pages-index-astro
 ---
+
 ## Design Health Score
 
-| # | Heuristic | Score | Key Issue |
-|---|---|---|---|
-| 1 | Visibility of System Status | 3 | Reading-progress bar degrades gracefully; no state for a failed OG-thumbnail load |
-| 2 | Match System / Real World | 4 | "Postmortems," tear-off calendar metaphor — genuinely fits the product |
-| 3 | User Control and Freedom | 3 | Good back-links/prev-next; no "clear search" short of deleting all text |
-| 4 | Consistency and Standards | 3 | PostGridCard reused everywhere, but Category/Tags/Search are three visually distinct systems with no stated relationship |
-| 5 | Error Prevention | 3 | Static paths prevent 404s; search has no debounce |
-| 6 | Recognition Rather Than Recall | 3 | Category shown per-card, but no fast-glance visual cue beyond small text |
-| 7 | Flexibility and Efficiency | n/a | Read-mode surface — no power-user path implied by the brief |
-| 8 | Aesthetic and Minimalist Design | 3 | Restrained, but three overlapping nav systems dent this |
-| 9 | Error Recovery | 3 | Zero-result/zero-post states are terse, no suggested next step |
-| 10 | Help and Documentation | n/a | Not applicable to a blog |
-| Total | | 25/32 | Good (78%) |
+| #     | Heuristic                       | Score | Key Issue                                                                                                                |
+| ----- | ------------------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------ |
+| 1     | Visibility of System Status     | 3     | Reading-progress bar degrades gracefully; no state for a failed OG-thumbnail load                                        |
+| 2     | Match System / Real World       | 4     | "Postmortems," tear-off calendar metaphor — genuinely fits the product                                                   |
+| 3     | User Control and Freedom        | 3     | Good back-links/prev-next; no "clear search" short of deleting all text                                                  |
+| 4     | Consistency and Standards       | 3     | PostGridCard reused everywhere, but Category/Tags/Search are three visually distinct systems with no stated relationship |
+| 5     | Error Prevention                | 3     | Static paths prevent 404s; search has no debounce                                                                        |
+| 6     | Recognition Rather Than Recall  | 3     | Category shown per-card, but no fast-glance visual cue beyond small text                                                 |
+| 7     | Flexibility and Efficiency      | n/a   | Read-mode surface — no power-user path implied by the brief                                                              |
+| 8     | Aesthetic and Minimalist Design | 3     | Restrained, but three overlapping nav systems dent this                                                                  |
+| 9     | Error Recovery                  | 3     | Zero-result/zero-post states are terse, no suggested next step                                                           |
+| 10    | Help and Documentation          | n/a   | Not applicable to a blog                                                                                                 |
+| Total |                                 | 25/32 | Good (78%)                                                                                                               |
 
 ## Design Specificity Verdict
 

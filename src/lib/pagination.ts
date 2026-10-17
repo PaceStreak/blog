@@ -12,7 +12,11 @@ export interface Page<T> {
   hasNext: boolean;
 }
 
-export function paginate<T>(all: T[], currentPage: number, pageSize = PAGE_SIZE): Page<T> {
+export function paginate<T>(
+  all: T[],
+  currentPage: number,
+  pageSize = PAGE_SIZE,
+): Page<T> {
   const totalPages = Math.max(1, Math.ceil(all.length / pageSize));
   const start = (currentPage - 1) * pageSize;
   return {
@@ -32,8 +36,18 @@ export function pageWindow(currentPage: number, totalPages: number): (number | n
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
-  const pages = new Set([1, 2, totalPages - 1, totalPages, currentPage - 1, currentPage, currentPage + 1]);
-  const sorted = [...pages].filter((p) => p >= 1 && p <= totalPages).sort((a, b) => a - b);
+  const pages = new Set([
+    1,
+    2,
+    totalPages - 1,
+    totalPages,
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+  ]);
+  const sorted = [...pages]
+    .filter((p) => p >= 1 && p <= totalPages)
+    .sort((a, b) => a - b);
 
   const result: (number | null)[] = [];
   for (let i = 0; i < sorted.length; i++) {

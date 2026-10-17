@@ -8,7 +8,7 @@ tags: ["design", "app", "web"]
 PaceStreak started as a training tracker and grew into something broader:
 reading, water, a language, sleep, a habit you're breaking. The look never
 followed. Near-black surfaces, a single lime accent, soft glowing cards. It
-read as *gym app*, and it read as every gym app.
+read as _gym app_, and it read as every gym app.
 
 So the whole thing was redesigned, app, site and blog together, with one rule:
 nothing visual had to survive. Only the product's truth did.

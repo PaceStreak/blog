@@ -26,7 +26,11 @@ export async function getStaticPaths() {
         shared: p.data.tags.filter((t) => post.data.tags.includes(t)).length,
       }))
       .filter((r) => r.shared > 0)
-      .sort((a, b) => b.shared - a.shared || b.post.data.date.valueOf() - a.post.data.date.valueOf())
+      .sort(
+        (a, b) =>
+          b.shared - a.shared ||
+          b.post.data.date.valueOf() - a.post.data.date.valueOf(),
+      )
       .slice(0, 3)
       .map((r) => r.post);
 
@@ -97,8 +101,9 @@ const toc = headings.filter((h) => h.depth === 2);
     <a
       href="/"
       class="text-[0.88rem] text-dim transition-colors duration-150 hover:text-ink"
-      >&larr; All posts</a
     >
+      &larr; All posts
+    </a>
 
     <header class="mt-7 flex gap-5 sm:gap-6">
       <DateBlock date={post.data.date} class="datecard--lg hidden sm:flex" />
@@ -112,16 +117,16 @@ const toc = headings.filter((h) => h.depth === 2);
         </a>
 
         <div class="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.85rem] text-dim">
-          <time class="sm:hidden" datetime={post.data.date.toISOString()}
-            >{formatDate(post.data.date)}</time
-          >
-          <span aria-hidden="true" class="sm:hidden">·</span>
+          <time class="sm:hidden" datetime={post.data.date.toISOString()}>
+            {formatDate(post.data.date)}
+          </time>
+          <span aria-hidden="true" class="sm:hidden">
+            ·
+          </span>
           <span>{minutes} min read</span>
         </div>
 
-        <h1
-          class="mt-3 max-w-[24ch] text-[2.1rem] font-semibold tracking-tight text-balance sm:text-[2.5rem]"
-        >
+        <h1 class="mt-3 max-w-[24ch] text-[2.1rem] font-semibold tracking-tight text-balance sm:text-[2.5rem]">
           {post.data.title}
         </h1>
 
@@ -129,22 +134,20 @@ const toc = headings.filter((h) => h.depth === 2);
           {post.data.description}
         </p>
 
-        {
-          post.data.tags.length > 0 && (
-            <ul class="mt-5 flex flex-wrap gap-2">
-              {post.data.tags.map((tag) => (
-                <li>
-                  <a
-                    href={`/tags/${tag}`}
-                    class="inline-block rounded-full border border-line px-2.5 py-1 text-[0.78rem] text-dim transition-colors duration-150 hover:border-accent hover:text-accent"
-                  >
-                    {tag}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )
-        }
+        {post.data.tags.length > 0 && (
+          <ul class="mt-5 flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <li>
+                <a
+                  href={`/tags/${tag}`}
+                  class="inline-block rounded-full border border-line px-2.5 py-1 text-[0.78rem] text-dim transition-colors duration-150 hover:border-accent hover:text-accent"
+                >
+                  {tag}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </header>
 
@@ -152,24 +155,25 @@ const toc = headings.filter((h) => h.depth === 2);
 
     <div class="post-layout mt-8 sm:mt-10">
       <div class="min-w-0">
-        {
-          toc.length > 2 && (
-            <nav class="toc toc-inline mb-10 rounded-lg border border-line bg-surface p-5" aria-labelledby="toc-heading">
-              <h2 id="toc-heading" class="kicker !text-[0.72rem]">
-                <MarkX size={12} /> On this page
-              </h2>
-              <ol class="toc-list mt-3.5">
-                {toc.map((heading) => (
-                  <li>
-                    <a href={`#${heading.slug}`} class="text-[0.94rem]">
-                      {heading.text}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          )
-        }
+        {toc.length > 2 && (
+          <nav
+            class="toc toc-inline mb-10 rounded-lg border border-line bg-surface p-5"
+            aria-labelledby="toc-heading"
+          >
+            <h2 id="toc-heading" class="kicker !text-[0.72rem]">
+              <MarkX size={12} /> On this page
+            </h2>
+            <ol class="toc-list mt-3.5">
+              {toc.map((heading) => (
+                <li>
+                  <a href={`#${heading.slug}`} class="text-[0.94rem]">
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
 
         <div class="article">
           <Content />
@@ -185,78 +189,79 @@ const toc = headings.filter((h) => h.depth === 2);
           <div class="text-[0.88rem] leading-tight">
             <p class="font-medium text-ink">AlzyWelzy</p>
             <p class="text-dim">
-              Building PaceStreak. <a class="u-link" href="https://github.com/PaceStreak">GitHub</a>
+              Building PaceStreak.{" "}
+              <a class="u-link" href="https://github.com/PaceStreak">
+                GitHub
+              </a>
             </p>
           </div>
         </div>
 
-        {
-          related.length > 0 && (
-            <div class="mt-12 border-t border-line pt-8">
-              <h2 class="kicker !text-[0.72rem]">
-                <MarkX size={12} /> Related
-              </h2>
-              <ul class="mt-5 grid-cards">
-                {related.map((r) => (
-                  <li>
-                    <PostGridCard post={r} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
-
-        {
-          (newer || older) && (
-            <nav
-              class="mt-16 grid gap-4 border-t border-line pt-8 sm:grid-cols-2"
-              aria-label="More posts"
-            >
-              {older ? (
-                <a
-                  href={`/posts/${older.id}`}
-                  class="rounded-lg border border-line bg-surface p-4 transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit hover:-translate-y-0.5"
-                >
-                  <span class="kicker !text-[0.72rem]">&larr; Older</span>
-                  <span class="mt-2 block font-medium text-pretty">{older.data.title}</span>
-                </a>
-              ) : (
-                <span />
-              )}
-
-              {newer && (
-                <a
-                  href={`/posts/${newer.id}`}
-                  class="rounded-lg border border-line bg-surface p-4 text-right transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit hover:-translate-y-0.5"
-                >
-                  <span class="kicker !text-[0.72rem] justify-end">Newer &rarr;</span>
-                  <span class="mt-2 block font-medium text-pretty">{newer.data.title}</span>
-                </a>
-              )}
-            </nav>
-          )
-        }
-      </div>
-
-      {
-        toc.length > 2 && (
-          <nav class="toc toc-rail" aria-labelledby="toc-rail-heading">
-            <h2 id="toc-rail-heading" class="kicker !text-[0.72rem]">
-              <MarkX size={12} /> On this page
+        {related.length > 0 && (
+          <div class="mt-12 border-t border-line pt-8">
+            <h2 class="kicker !text-[0.72rem]">
+              <MarkX size={12} /> Related
             </h2>
-            <ol class="toc-list mt-3.5">
-              {toc.map((heading) => (
+            <ul class="mt-5 grid-cards">
+              {related.map((r) => (
                 <li>
-                  <a href={`#${heading.slug}`} class="text-[0.88rem]">
-                    {heading.text}
-                  </a>
+                  <PostGridCard post={r} />
                 </li>
               ))}
-            </ol>
+            </ul>
+          </div>
+        )}
+
+        {(newer || older) && (
+          <nav
+            class="mt-16 grid gap-4 border-t border-line pt-8 sm:grid-cols-2"
+            aria-label="More posts"
+          >
+            {older ? (
+              <a
+                href={`/posts/${older.id}`}
+                class="rounded-lg border border-line bg-surface p-4 transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit hover:-translate-y-0.5"
+              >
+                <span class="kicker !text-[0.72rem]">&larr; Older</span>
+                <span class="mt-2 block font-medium text-pretty">
+                  {older.data.title}
+                </span>
+              </a>
+            ) : (
+              <span />
+            )}
+
+            {newer && (
+              <a
+                href={`/posts/${newer.id}`}
+                class="rounded-lg border border-line bg-surface p-4 text-right transition-[border-color,transform] duration-200 [transition-timing-function:var(--ease-out)] hover:border-line-lit hover:-translate-y-0.5"
+              >
+                <span class="kicker !text-[0.72rem] justify-end">Newer &rarr;</span>
+                <span class="mt-2 block font-medium text-pretty">
+                  {newer.data.title}
+                </span>
+              </a>
+            )}
           </nav>
-        )
-      }
+        )}
+      </div>
+
+      {toc.length > 2 && (
+        <nav class="toc toc-rail" aria-labelledby="toc-rail-heading">
+          <h2 id="toc-rail-heading" class="kicker !text-[0.72rem]">
+            <MarkX size={12} /> On this page
+          </h2>
+          <ol class="toc-list mt-3.5">
+            {toc.map((heading) => (
+              <li>
+                <a href={`#${heading.slug}`} class="text-[0.88rem]">
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
     </div>
   </article>
 </Base>

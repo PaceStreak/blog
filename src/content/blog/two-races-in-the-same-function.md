@@ -20,7 +20,7 @@ naturally when an offline outbox flush races a live request on reconnect.
 If two calls to `recompute()` for the same user both start before either
 finishes, both can read the same `previous` row. Each one then computes
 "what's new" relative to that same stale snapshot - so if the state crossed
-a milestone between them, both calls can independently decide *they're* the
+a milestone between them, both calls can independently decide _they're_ the
 one that crossed it, and both fire the "you just reached level 12"
 notification, or both think a level-up happened when only one write should
 have produced it.
@@ -38,7 +38,7 @@ await db.execute(
 releases automatically at commit - no explicit unlock, and no way for it to
 leak past the request that took it. Two genuinely concurrent calls for the
 same user now run one after the other instead of interleaving; calls for
-*different* users never contend, since the lock key is per-user.
+_different_ users never contend, since the lock key is per-user.
 
 ## The second race: NULL doesn't equal NULL
 
@@ -76,7 +76,7 @@ With that in place, the insert path uses `ON CONFLICT DO NOTHING` against
 it - a genuine race now lands on one row and one payout instead of a
 duplicate, rather than needing the advisory lock to prevent the race from
 reaching the insert at all. Belt and suspenders: the lock stops the races
-that matter for correctness of *state*, the partial index stops this one
+that matter for correctness of _state_, the partial index stops this one
 specific race from mattering even if something else ever calls the insert
 path outside `recompute()`'s lock.
 

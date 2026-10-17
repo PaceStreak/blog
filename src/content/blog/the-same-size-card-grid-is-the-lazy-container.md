@@ -10,7 +10,7 @@ component - "How it works" on the homepage, and "Principles" on the About
 page - despite having nothing to do with each other. Both were an
 icon-plus-heading-plus-text card, repeated three or six times, all sized
 identically in a grid. That shape is the thing a landing page reaches for by
-default when nobody's decided what the section should actually *look* like,
+default when nobody's decided what the section should actually _look_ like,
 and it's worth naming precisely because it's invisible once it exists: it
 doesn't look broken, it looks like every other site's features section,
 which is exactly the problem.

@@ -24,22 +24,34 @@ export const categories: Category[] = [
   {
     slug: "postmortems",
     label: "Postmortems",
-    description: "What broke, why, and the exact chain of causes — written down while it's still fresh.",
+    description:
+      "What broke, why, and the exact chain of causes — written down while it's still fresh.",
     tags: ["bugs", "lessons"],
     color: "#e08a6b",
   },
   {
     slug: "security-privacy",
     label: "Security & Privacy",
-    description: "Auth, data handling, and the constraints that come from holding health data.",
+    description:
+      "Auth, data handling, and the constraints that come from holding health data.",
     tags: ["security", "privacy", "auth", "csp", "cookies"],
     color: "#c97fd4",
   },
   {
     slug: "infrastructure",
     label: "Infrastructure",
-    description: "Hosting, deployment, monitoring, and the decisions behind where things run.",
-    tags: ["infrastructure", "cloudflare", "deployment", "status", "dns", "monitoring", "docker", "stack"],
+    description:
+      "Hosting, deployment, monitoring, and the decisions behind where things run.",
+    tags: [
+      "infrastructure",
+      "cloudflare",
+      "deployment",
+      "status",
+      "dns",
+      "monitoring",
+      "docker",
+      "stack",
+    ],
     color: "#6fb1e0",
   },
   {
@@ -53,7 +65,18 @@ export const categories: Category[] = [
     slug: "product",
     label: "Product",
     description: "What PaceStreak does, and the reasoning behind how it works.",
-    tags: ["product", "habits", "streaks", "gamification", "body", "units", "time", "launch", "roadmap", "social"],
+    tags: [
+      "product",
+      "habits",
+      "streaks",
+      "gamification",
+      "body",
+      "units",
+      "time",
+      "launch",
+      "roadmap",
+      "social",
+    ],
     color: "#d3ff3e",
   },
   {
@@ -98,7 +121,10 @@ export function categoriesForPosts(postsTags: string[][]): Category[] {
 /** The most common tags among a category's own posts, for "browse by tag
     within this category" — every tag that shows up on at least one post in
     the category, ranked by how often it does. */
-export function topTagsForCategory(postsTags: string[][], limit = 8): { tag: string; count: number }[] {
+export function topTagsForCategory(
+  postsTags: string[][],
+  limit = 8,
+): { tag: string; count: number }[] {
   const counts = new Map<string, number>();
   for (const tags of postsTags) {
     for (const tag of tags) counts.set(tag, (counts.get(tag) ?? 0) + 1);

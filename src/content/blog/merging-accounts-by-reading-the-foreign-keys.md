@@ -8,7 +8,7 @@ tags: ["engineering", "data", "postgres"]
 Someone with two PaceStreak accounts wanted one: keep the login of the new
 one, keep the history and the profile of the old one. That's an admin tool now
 (`POST /v1/admin/users/{id}/merge`), and the interesting part is what it does
-*not* contain: a list of tables.
+_not_ contain: a list of tables.
 
 ## The list that goes stale
 

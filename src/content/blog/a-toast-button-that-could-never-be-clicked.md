@@ -5,8 +5,8 @@ date: 2026-09-26T21:00:00Z
 tags: ["bugs", "app", "pointer-events"]
 ---
 
-When habit notes shipped, ticking a habit started showing a toast, *Journal:
-done*, with an **Add a note** button. In the browser test, the button did
+When habit notes shipped, ticking a habit started showing a toast, _Journal:
+done_, with an **Add a note** button. In the browser test, the button did
 nothing. Not an error. Nothing.
 
 ## Suspects

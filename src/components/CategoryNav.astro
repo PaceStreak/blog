@@ -27,19 +27,17 @@ const { current } = Astro.props;
           All
         </a>
       </li>
-      {
-        categories.map((c) => (
-          <li>
-            <a
-              href={`/category/${c.slug}`}
-              class="category-pill"
-              aria-current={current === c.slug ? "page" : undefined}
-            >
-              {c.label}
-            </a>
-          </li>
-        ))
-      }
+      {categories.map((c) => (
+        <li>
+          <a
+            href={`/category/${c.slug}`}
+            class="category-pill"
+            aria-current={current === c.slug ? "page" : undefined}
+          >
+            {c.label}
+          </a>
+        </li>
+      ))}
     </ul>
   </div>
 </nav>

@@ -39,7 +39,7 @@ if "note" in body.model_fields_set:
 
 The same change raised a second question: what if you untick a day that has a
 note? Before, amount zero deleted the row. Now a day can hold just a note
-(*ill, rested*): amount zero, so not done, but kept. Clearing both the amount
+(_ill, rested_): amount zero, so not done, but kept. Clearing both the amount
 and the note removes it.
 
 ## Tested as a sequence

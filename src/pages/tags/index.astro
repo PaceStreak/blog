@@ -30,32 +30,32 @@ const tags = [...counts.entries()].sort(
     <a
       href="/"
       class="text-[0.88rem] text-dim transition-colors duration-150 hover:text-ink"
-      >&larr; All posts</a
     >
-    <h1 class="mt-5 text-[2.4rem] font-semibold tracking-tight sm:text-[2.8rem]">Tags</h1>
+      &larr; All posts
+    </a>
+    <h1 class="mt-5 text-[2.4rem] font-semibold tracking-tight sm:text-[2.8rem]">
+      Tags
+    </h1>
     <p class="mt-4 text-muted">
-      {tags.length} topic{tags.length === 1 ? "" : "s"} across {posts.length} post{
-        posts.length === 1 ? "" : "s"
-      }.
+      {tags.length} topic{tags.length === 1 ? "" : "s"} across {posts.length} post
+      {posts.length === 1 ? "" : "s"}.
     </p>
 
-    {
-      tags.length === 0 ? (
-        <p class="mt-8 text-muted">Nothing tagged yet.</p>
-      ) : (
-        <ul class="mt-8 flex flex-wrap gap-2.5">
-          {tags.map(([tag, count]) => (
-            <li>
-              <a
-                href={`/tags/${tag}`}
-                class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-2 text-[0.92rem] transition-[border-color,transform,color] duration-150 [transition-timing-function:var(--ease-out)] hover:-translate-y-0.5 hover:border-accent hover:text-accent"
-              >
-                {tag} <span class="text-[0.8rem] text-dim">{count}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
+    {tags.length === 0 ? (
+      <p class="mt-8 text-muted">Nothing tagged yet.</p>
+    ) : (
+      <ul class="mt-8 flex flex-wrap gap-2.5">
+        {tags.map(([tag, count]) => (
+          <li>
+            <a
+              href={`/tags/${tag}`}
+              class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-2 text-[0.92rem] transition-[border-color,transform,color] duration-150 [transition-timing-function:var(--ease-out)] hover:-translate-y-0.5 hover:border-accent hover:text-accent"
+            >
+              {tag} <span class="text-[0.8rem] text-dim">{count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
   </section>
 </Base>

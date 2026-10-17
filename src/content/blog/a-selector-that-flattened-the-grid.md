@@ -15,13 +15,17 @@ The grid cells are `<i>` elements inside a `.heat` container. Each cell gets a
 level class, `.lvl--0` to `.lvl--4`, that paints its colour:
 
 ```css
-.lvl--3 { background: var(--heat-3); }
+.lvl--3 {
+  background: var(--heat-3);
+}
 ```
 
 Someone (reasonably) wanted a default colour for cells, and wrote:
 
 ```css
-.heat i { background: var(--heat-0); }
+.heat i {
+  background: var(--heat-0);
+}
 ```
 
 ## Why the default won

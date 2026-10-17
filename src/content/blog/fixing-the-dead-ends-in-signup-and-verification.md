@@ -23,7 +23,7 @@ place a code actually does something.
 
 Signup does two calls: create the account, then log in immediately so the
 next screen is onboarding rather than a second form. If that second call
-failed for the *expected* reason - the account isn't verified yet - the code
+failed for the _expected_ reason - the account isn't verified yet - the code
 handled it correctly and moved on. If it failed for anything else (a Turnstile
 token already spent, a transient rate limit), the error surfaced on the
 signup form itself, even though the account from the first call already

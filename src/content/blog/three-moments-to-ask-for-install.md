@@ -46,8 +46,8 @@ install it, or in the middle of a live workout.
 ## iPhones
 
 Safari has no install API at all; there is nothing for a button to call. On
-iOS the banner says what to do instead: *Tap Share in Safari, then Add to Home
-Screen*, and its button just says *Got it*.
+iOS the banner says what to do instead: _Tap Share in Safari, then Add to Home
+Screen_, and its button just says _Got it_.
 
 ## Whenever you like
 

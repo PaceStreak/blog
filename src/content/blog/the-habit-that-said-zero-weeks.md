@@ -5,7 +5,7 @@ date: 2026-09-26T20:00:00Z
 tags: ["streaks", "bugs", "habits"]
 ---
 
-A screenshot came back from real use: *Seven hours' sleep*, ticked every day for
+A screenshot came back from real use: _Seven hours' sleep_, ticked every day for
 ten days, streak **0 wk**, best **0**.
 
 ## Why
@@ -38,5 +38,5 @@ day, started on Thursday: four. Every later week asks for the full target.
 The test I wrote expected a streak of one after eleven daily ticks from a
 Thursday. It got two. The engine was right: eleven days from Thursday runs
 through the whole next week, which is kept too. The fix was to the test, and
-the habit page now says so in words: *the first week only asks for the days
-left after you started.*
+the habit page now says so in words: _the first week only asks for the days
+left after you started._

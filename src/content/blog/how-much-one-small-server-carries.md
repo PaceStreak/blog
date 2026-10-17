@@ -29,11 +29,11 @@ free-tier quotas are real.
 
 ## The numbers
 
-| Where | Load | Throughput | p50 / p95 |
-| --- | --- | --- | --- |
-| Local, one process | 10 users | 38 req/s | 130–520 / 180–1000 ms |
-| Local, one process | 30 users | 45 req/s | 400–1230 / 630–1940 ms |
-| Production `/health` | 5 req/s | – | 373 / 3568 ms |
+| Where                | Load     | Throughput | p50 / p95              |
+| -------------------- | -------- | ---------- | ---------------------- |
+| Local, one process   | 10 users | 38 req/s   | 130–520 / 180–1000 ms  |
+| Local, one process   | 30 users | 45 req/s   | 400–1230 / 630–1940 ms |
+| Production `/health` | 5 req/s  | –          | 373 / 3568 ms          |
 
 No errors in any run.
 

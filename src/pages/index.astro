@@ -50,40 +50,43 @@ const jsonLd = {
     </h1>
     <p class="mt-6 max-w-2xl text-[1.1rem] leading-relaxed text-muted text-pretty">
       Notes from building{" "}
-      <a class="text-accent u-link" href="https://www.pacestreak.com">PaceStreak</a>, a
-      habit and streak tracker. Written as it happens rather than tidied up afterwards.
+      <a class="text-accent u-link" href="https://www.pacestreak.com">
+        PaceStreak
+      </a>
+      , a habit and streak tracker. Written as it happens rather than tidied up
+      afterwards.
     </p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a class="btn" href="/search">Search the posts</a>
-      <a class="btn btn--ghost" href="/rss.xml">Follow by RSS</a>
+      <a class="btn" href="/search">
+        Search the posts
+      </a>
+      <a class="btn btn--ghost" href="/rss.xml">
+        Follow by RSS
+      </a>
     </div>
   </section>
 
   <CategoryNav />
 
   <div class="wrap-wide py-10 sm:py-12">
-    {
-      posts.length === 0 ? (
-        <p class="text-muted">No posts yet. The first one is being written.</p>
-      ) : (
-        <>
-          <FeaturedPost post={posts[0]} />
+    {posts.length === 0 ? (
+      <p class="text-muted">No posts yet. The first one is being written.</p>
+    ) : (
+      <>
+        <FeaturedPost post={posts[0]} />
 
-          {
-            posts.length > 1 && (
-              <ul class="mt-10 grid-cards">
-                {posts.slice(1).map((post) => (
-                  <li>
-                    <PostGridCard post={post} />
-                  </li>
-                ))}
-              </ul>
-            )
-          }
+        {posts.length > 1 && (
+          <ul class="mt-10 grid-cards">
+            {posts.slice(1).map((post) => (
+              <li>
+                <PostGridCard post={post} />
+              </li>
+            ))}
+          </ul>
+        )}
 
-          <Pager currentPage={1} totalPages={totalPages} basePath="/" />
-        </>
-      )
-    }
+        <Pager currentPage={1} totalPages={totalPages} basePath="/" />
+      </>
+    )}
   </div>
 </Base>

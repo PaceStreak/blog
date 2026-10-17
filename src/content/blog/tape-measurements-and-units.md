@@ -36,7 +36,7 @@ against before you type.
 
 ## Change, not judgement
 
-A *Tape progress* list shows each measurement's latest value and how far it has
+A _Tape progress_ list shows each measurement's latest value and how far it has
 moved since the first reading. There's no colour for good or bad. A waist going
 down and an arm going up are both just numbers; which one you wanted is yours
 to know. And like every body number in the product, none of it reaches XP, a

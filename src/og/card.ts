@@ -60,7 +60,12 @@ export async function renderCard({ title, meta, tags }: CardInput): Promise<Buff
         h(
           "svg",
           { width: 44, height: 44 },
-          [h("path", {}, undefined, { d: "M39 5 8 39h19L25 59 56 25H37L39 5Z", fill: ACCENT })],
+          [
+            h("path", {}, undefined, {
+              d: "M39 5 8 39h19L25 59 56 25H37L39 5Z",
+              fill: ACCENT,
+            }),
+          ],
           { viewBox: "0 0 64 64" },
         ),
         h("div", { display: "flex", fontSize: 32, fontWeight: 700, color: INK }, [

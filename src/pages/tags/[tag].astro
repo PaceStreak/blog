@@ -43,11 +43,10 @@ const spannedCategories = categoriesForPosts(posts.map((p) => p.data.tags));
     <a
       href="/tags"
       class="text-[0.88rem] text-dim transition-colors duration-150 hover:text-ink"
-      >&larr; All tags</a
     >
-    <h1
-      class="mt-5 text-[2.4rem] font-semibold tracking-tight before:text-dim before:content-['#'] sm:text-[2.8rem]"
-    >
+      &larr; All tags
+    </a>
+    <h1 class="mt-5 text-[2.4rem] font-semibold tracking-tight before:text-dim before:content-['#'] sm:text-[2.8rem]">
       {tag}
     </h1>
     <p class="mt-4 text-muted">
@@ -81,7 +80,11 @@ const spannedCategories = categoriesForPosts(posts.map((p) => p.data.tags));
 
   <div class="wrap-wide pb-16">
     <ul class="grid-cards">
-      {posts.map((post) => <li><PostGridCard post={post} /></li>)}
+      {posts.map((post) => (
+        <li>
+          <PostGridCard post={post} />
+        </li>
+      ))}
     </ul>
   </div>
 </Base>
