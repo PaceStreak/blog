@@ -37,7 +37,7 @@ with barely a gigabyte to give. The system was swapping hard enough that
 Docker's own internal DNS resolver started timing out against the metadata
 server:
 
-```
+```text
 level=warning msg="[resolver] connect failed" error="dial udp 169.254.169.254:53: i/o timeout"
 level=error msg="failed to get longest-active member" error="failed to find longest active peer" raft_id=41b5702ccdca7c0c
 ```
@@ -67,7 +67,7 @@ The system was already reporting `VERSION_ID="26.04"` in `/etc/os-release`,
 which is the trap: the OS identifies as upgraded well before the package
 database agrees.
 
-```
+```bash
 sudo dpkg --audit
 ```
 
@@ -134,7 +134,7 @@ were queued behind garbage that was never going to clear itself.
 The fix took one call: restarting the Neon compute endpoint, which drops
 and rebuilds the pooler's connection table from nothing.
 
-```
+```http
 POST /projects/{id}/branches/{id}/endpoints/{id}/restart
 ```
 
@@ -182,7 +182,7 @@ attempt - with nothing else contending for the CPU at that exact moment -
 was what finally let one boot sequence run start to finish without getting
 starved partway through.
 
-```
+```text
 api.pacestreak.com/health: 200
 ```
 

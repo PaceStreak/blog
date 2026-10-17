@@ -7,7 +7,7 @@ tags: ["astro", "bugs", "web", "testing"]
 
 Three separate times, the PaceStreak website shipped a footer that read:
 
-> Write tohello@pacestreak.com
+> `Write tohello@pacestreak.com`
 
 Each time it was fixed. Each time it came back.
 
