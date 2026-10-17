@@ -5,9 +5,10 @@ date: 2026-09-25T20:00:00Z
 tags: ["github", "infrastructure", "status"]
 ---
 
-> **Update, 2 October 2026:** every PaceStreak repository is now public.
-> See [All of PaceStreak is open source](/posts/all-of-pacestreak-is-open-source).
-> The reasoning below still explains why these two had to be public first.
+> **Update, 17 October 2026:** after a spell with every repository public
+> (2 October), only `api`, `status` and `.github` are public;
+> see [All of PaceStreak is open source](/posts/all-of-pacestreak-is-open-source).
+> The reasoning below still explains why `status` and `.github` have to be.
 
 Almost every PaceStreak repository is private. Two are public, and both look
 like mistakes to anyone tidying up. They are not.

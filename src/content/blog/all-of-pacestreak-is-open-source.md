@@ -5,6 +5,12 @@ date: 2026-10-02T12:00:00Z
 tags: ["github", "security", "privacy"]
 ---
 
+> **Update, 17 October 2026:** the app, both sites, the infrastructure notes and
+> the root repository are private again. Public now: `api` (the code that
+> stores and protects your data, and whose five-minute worker would exhaust
+> GitHub's free private-repository Actions minutes), plus `status` and
+> `.github`, which have to be. The rest of this post describes 2 October.
+
 Until today only two PaceStreak repositories were public: the
 [status page and the org's `.github` repo](/posts/two-repositories-public-on-purpose),
 both because they stop working otherwise. As of today all eight are, at
