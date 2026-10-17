@@ -6,9 +6,9 @@ tags: ["github", "infrastructure", "status"]
 ---
 
 > **Update, 17 October 2026:** after a spell with every repository public
-> (2 October), only `api`, `status` and `.github` are public;
+> (2 October), only `status` and `.github` are public;
 > see [All of PaceStreak is open source](/posts/all-of-pacestreak-is-open-source).
-> The reasoning below still explains why `status` and `.github` have to be.
+> The reasoning below still explains why these two have to be.
 
 Almost every PaceStreak repository is private. Two are public, and both look
 like mistakes to anyone tidying up. They are not.
