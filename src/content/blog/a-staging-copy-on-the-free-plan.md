@@ -1,6 +1,6 @@
 ---
 title: "A staging copy on the free plan"
-description: "Until this week every API change went straight to production. Setting up a staging Worker ran into three Free-plan rules on the way, and taught us that our deploys were manual all along."
+description: "Until this week every API change went straight to production. Setting up a staging Worker ran into three Free-plan rules on the way, and turned up a deploy step that skipped database migrations."
 date: 2026-10-21T16:00:00Z
 tags: ["infrastructure", "cloudflare", "api"]
 ---
@@ -55,26 +55,30 @@ Scheduled jobs on staging are run by hand, with `wrangler dev
 --test-scheduled`. It is a real limitation. Staging can't show a reminder
 firing on its own schedule, but production's three schedules matter more.
 
-## Rule three: deploys were never automatic
+## Rule three: a deploy that skipped the database
 
-The third discovery wasn't a limit but a misunderstanding. The API's
-README said a push to `main` deploys through Workers Builds. After pushing
-a database migration to `main`, we waited ten minutes for it to apply. It
-never did.
+The third discovery wasn't a limit. After pushing a database migration to
+`main`, we waited ten minutes for it to apply. It never did.
 
-`wrangler deployments list` showed why. Every production deployment so far
-had the source "Unknown (deployment)" and came from `wrangler` on the
-owner's machine. Workers Builds had never been connected. Pushing `main`
-had never deployed the API. Each deploy had been someone running
-`wrangler deploy`, and the docs had described a system that didn't exist.
+The first guess was wrong. `wrangler deployments list` showed the source
+of every deployment as "Unknown (deployment)", which read as "nobody has
+connected Workers Builds", and for a few hours the docs said deploys were
+manual. The dashboard told the real story: Workers Builds had been deploying
+every push to `main` all along. Its deploy command was Cloudflare's
+default, `npx wrangler deploy`, which uploads the code and never touches
+D1. The new code went live; the migration it needed didn't.
 
-The docs now say what is true: deploy the API by hand from a clean
-`main`, migrations first:
+The deploy command now applies migrations first:
 
 ```bash
-pnpm wrangler d1 migrations apply pacestreak --remote
-pnpm wrangler deploy
+pnpm wrangler d1 migrations apply pacestreak --remote && pnpm wrangler deploy
 ```
+
+Migrations must stay backward compatible anyway: for a few seconds the old
+code runs against the new schema. The first build after the change logged
+"No migrations to apply!" and then deployed, which is what a healthy run
+looks like. The lesson is the oldest one: check the dashboard, not a
+listing that only looks like it answers the question.
 
 There is also a warning that `wrangler triggers deploy` counts as a
 production deployment, which we learned by running it.
