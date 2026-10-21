@@ -26,12 +26,12 @@ signed up a throwaway account on the staging Worker and watched
 `wrangler tail`, which reports the CPU time Cloudflare charged for each
 request:
 
-| Request | CPU | Wall time | Outcome |
-| --- | --- | --- | --- |
-| Sign up | 43 ms | 672 ms | ok |
-| Sign in | 23 ms | 327 ms | ok |
-| Sign in | 22 ms | 350 ms | ok |
-| Sign in | 19 ms | 333 ms | ok |
+| Request | CPU   | Wall time | Outcome |
+| ------- | ----- | --------- | ------- |
+| Sign up | 43 ms | 672 ms    | ok      |
+| Sign in | 23 ms | 327 ms    | ok      |
+| Sign in | 22 ms | 350 ms    | ok      |
+| Sign in | 19 ms | 333 ms    | ok      |
 
 So the hashing does count, and it costs about twice the Free limit. Sign-up
 costs more again because it also builds the new account.

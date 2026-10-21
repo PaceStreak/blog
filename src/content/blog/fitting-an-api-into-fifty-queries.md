@@ -62,13 +62,13 @@ per statement, it now inserts all the rows in one statement.
 
 ## What changed, route by route
 
-| Route | Before | After |
-| --- | --- | --- |
-| Edit a workout | 80 | under 45 |
-| Export your data | 48 | about 15 |
-| Finish onboarding | 46 | under 45 |
-| Restore a habit with years of logs from Trash | about 90 | under 45 |
-| Admin account merge | 159 | queued, 40 per slice |
+| Route                                         | Before   | After                |
+| --------------------------------------------- | -------- | -------------------- |
+| Edit a workout                                | 80       | under 45             |
+| Export your data                              | 48       | about 15             |
+| Finish onboarding                             | 46       | under 45             |
+| Restore a habit with years of logs from Trash | about 90 | under 45             |
+| Admin account merge                           | 159      | queued, 40 per slice |
 
 The merge is the one route that could not fit in a single request, so its
 contract changed. It now freezes the source account, answers `202` with
