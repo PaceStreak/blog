@@ -80,8 +80,8 @@ code runs against the new schema. The first build after the change logged
 looks like. The lesson is the oldest one: check the dashboard, not a
 listing that only looks like it answers the question.
 
-There is also a warning that `wrangler triggers deploy` counts as a
-production deployment, which we learned by running it.
+One more thing we learned by doing it: `wrangler triggers deploy`, run to
+check the cron setup, counts as a production deployment.
 
 ## What staging is for now
 
