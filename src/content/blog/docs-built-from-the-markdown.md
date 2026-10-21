@@ -83,6 +83,24 @@ live in one typed file, `site/src/data/repos.ts`, and each entry carries the
 date it was last checked. That is exactly the kind of page that goes stale,
 so it has a guard.
 
+## An API reference that can't drift
+
+FastAPI used to give the old Python service a `/docs` page for free. The
+Worker has no such page, and adding one there would cost bundle size the
+Free plan's budget doesn't have. Instead, `pnpm openapi` in the `api`
+repository walks the real router and writes `openapi.json`: 272
+operations, the same 272 the router mounts, with request schemas taken from
+the Zod validators the routes already use. CI regenerates it on every push
+and fails if the committed copy is stale.
+
+The docs site renders that file at build time into
+[/api](https://docs.pacestreak.com/api): one page per area, a parameter
+table and response schema for every operation, and a curl example. The usual
+API explorers style themselves with inline styles, which the policy above
+blocks, so the reference is plain HTML with no client-side code at all. The
+site keeps a copy of the spec, and the freshness check below fails when it
+differs from the `api` repository's.
+
 ## The check that fails when it drifts
 
 `site/scripts/check-freshness.mjs` runs in CI on every push and once a week:
